@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: 25% auto;
+    grid-template-columns: 35% auto;
     grid-template-rows: auto;
     background-color: white;
     position: absolute;
@@ -14,15 +14,16 @@ body {
     width: 115px;
     height: 115px;
     border-radius: 55px;
-    grid-row: 1 / -1;
+    grid-row: 1;
     grid-column: 1;
-    margin-left: 50px;
+    justify-self: right;
+    margin-right: 50px;
 }
 
 #sidebar_login_container {
     display: grid;
     grid-template-rows: repeat(2, max-content);
-    grid-template-columns: repeat(2, max-content) auto;
+    grid-template-columns: repeat(2, 1fr);
     margin-bottom: 15px;
     margin-top: 50px;
 }
@@ -34,15 +35,15 @@ body {
     color: white;
     grid-row: 1;
     grid-column: 2;
-    margin-left: 50px;
+    align-self: center;
 }
 
 .user_options_toggle {
     justify-self: center;
     grid-row: 2;
-    grid-column: 2;
-    margin-left: 50px;
+    grid-column: 1 / -1;
     transition: transform 0.2s;
+    margin-top: 25px;
 }
 
 .user_options_toggle:hover {
@@ -50,7 +51,7 @@ body {
 }
 
 .user_options_container {
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     height: 0;
     overflow: hidden;
 }
@@ -59,7 +60,7 @@ body {
     grid-column: 1;
     grid-row: 1;
     background-color: #1e2830;
-    width: max-content;
+    width: 100%;
     box-shadow: 3px 3px 6px #888;
 }
 
@@ -78,7 +79,7 @@ body {
 
 .sidebar_category_header_container {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 10% 2fr 1fr;
     grid-template-rows: max-content;
     height: max-content;
 }
@@ -117,7 +118,8 @@ body {
     font-family: Raleway Medium;
     font-weight: 700;
     font-size: 22pt;
-    padding-left: 100px;
+    grid-column: 2;
+    /* padding-left: 100px; */
     margin: 0;
 }
 
@@ -175,7 +177,7 @@ body {
 
 .sidebar_category_options_header_container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
 }
 
@@ -191,8 +193,7 @@ body {
 
 .sidebar_category_options_icon {
     align-self: center;
-    justify-self: right;
-    margin-right: 50px;
+    justify-self: center;
     opacity: 0.6;
     filter: brightness(150%);
 }
@@ -371,6 +372,19 @@ body {
 }
 
 /* BEGIN media queries */
+/* @media only screen and (max-width: 1500px) and (min-width: 1201px) {
+    body {
+        grid-template-columns: 37% auto;
+    }
+}
+
+
+@media only screen and (max-width: 1200px) and (min-width: 1101px) {
+    body {
+        grid-template-columns: 40% auto;
+    }
+} */
+
 @media only screen and (max-width: 1100px) {
     body {
         grid-template-columns: auto;
