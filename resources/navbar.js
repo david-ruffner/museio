@@ -26,7 +26,9 @@ $(".sidebar_category_header_container").click(function() {
 
         // Get the number of children in the container
         // Each child in the container is about 75 pixels in height
-        let container_height = (parent_container.children(".sidebar_category_options_container").children().length) * 75;
+        let container_multiplier = (client_is_mobile) ? 171 : 75;
+
+        let container_height = (parent_container.children(".sidebar_category_options_container").children().length) * container_multiplier;
         parent_container.children(".sidebar_category_options_container").animate({height: `${container_height}px`}, 150);
 
         parent_container.data({container_state: true});
@@ -304,21 +306,25 @@ $(".user_options_toggle").click(function() {
         // Collapse the container
         parent_container.animate({height: 0}, 150);
 
-        parent_container.data({container_state: false});
+        parent_container.data().container_state = false;
     }
     else {
         icon_arrow.toggleClass("collapse_icon_open");
 
         // Get the number of children in the container
         // Each child in the container is about 75 pixels in height
-        let container_height = (parent_container.children().length) * 75;
+        let container_multiplier = (client_is_mobile) ? 171 : 75;
+        let container_height = (parent_container.children().length) * container_multiplier;
         parent_container.animate({height: `${container_height}px`}, 150);
 
-        parent_container.data({container_state: true});
+        parent_container.data().container_state = true;
     }
 })
 
 $(document).ready(function() {
+    // Check if the user is on mobile
+    client_is_mobile = ($(document).width() <= 1100) ? true : false;
+
     // Check for user info in session storage
     let user_profile_info = sessionStorage.getItem('museio_user_info');
     if (!user_profile_info) {
@@ -439,3 +445,49 @@ function prepare_nav_bar() {
         container_states.sidebar = true;
     })
 }
+
+$(window).resize(function() {
+    if ($(document).width() <= 1100) {
+        if (!client_is_mobile) {
+            client_is_mobile = true;
+            // Resize each category options header container for mobile if they are expanded
+            $(".sidebar_category_options_container").each(function() {
+                if ($(this).parent().data().container_state) {
+                    let num_children = $(this).children(".sidebar_category_options_header_container").length;
+                    let new_container_height = num_children * 171;
+                    $(this).css("height", `${new_container_height}px`);
+                }
+            })
+
+            $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
+                if ($(this).parent().data().container_state) {
+                    let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
+                    console.log(num_children);
+                    let new_container_height = num_children * 171;
+                    $(this).parent().css("height", `${new_container_height}px`);
+                }
+            })
+        }
+    }
+    else {
+        if (client_is_mobile) {
+            client_is_mobile = false;
+            // Resize each category options header container for desktop
+            $(".sidebar_category_options_container").each(function() {
+                if ($(this).parent().data().container_state) {
+                    let num_children = $(this).children(".sidebar_category_options_header_container").length;
+                    let new_container_height = num_children * 75;
+                    $(this).css("height", `${new_container_height}px`);
+                }
+            })
+
+            $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
+                if ($(this).parent().data().container_state) {
+                    let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
+                    let new_container_height = num_children * 75;
+                    $(this).parent().css("height", `${new_container_height}px`);
+                }
+            })
+        }
+    }
+})
