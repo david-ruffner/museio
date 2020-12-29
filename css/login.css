@@ -1,0 +1,509 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 37% 7% auto;
+    grid-template-rows: auto;
+    background-color: var(--background-grey);
+}
+
+#text_height_test {
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: 600px;
+}
+
+#text_height_test > h1 {
+    font-family: Raleway Extra Light;
+    font-weight: 500;
+    font-size: 22pt;
+    color: white;
+}
+
+#side_container {
+    grid-column: 1;
+    grid-row: 1;
+    background-image: url("../resources/images/login_piano_background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: grid;
+    grid-template-rows: 1fr max-content 1fr;
+    opacity: 0;
+} 
+
+#side_container > h1 {
+    font-family: Oswald Medium;
+    color: white;
+    font-size: 52pt;
+    justify-self: center;
+    text-align: center;
+    margin: 0;
+}
+
+#side_container > h1 > span {
+    font-family: Oswald Extra Light;
+    margin-left: 5px;
+}
+
+#side_container > h2 {
+    font-family: Raleway Extra Light;
+    font-size: 36pt;
+    color: white;
+    font-weight: 100;
+    text-align: center;
+    justify-self: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#side_container > img {
+    justify-self: center;
+    align-self: flex-end;
+}
+
+#login_container {
+    grid-column: 3;
+    grid-row: 1;
+    display: grid;
+    grid-template-rows: 20% repeat(10, max-content);
+    grid-template-columns: auto;
+}
+
+#status_container {
+    grid-row: 3;
+    grid-column: 1;
+    z-index: 1;
+    background-color: var(--error-box-red);
+    width: 600px;
+    height: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    margin-bottom: 30px;
+    /* position: relative;
+    opacity: 0;
+    left: 100%;
+    display: none; */
+}
+
+#status_container > h1 {
+    justify-self: center;
+    align-self: center;
+    font-family: Raleway Extra Light;
+    font-weight: 500;
+    font-size: 22pt;
+    color: white;
+    margin-left: 30px;
+}
+
+#login_container > h1 {
+    grid-row: 2;
+    grid-column: 1;
+    z-index: 1;
+    font-family: Oswald Medium;
+    font-size: 36pt;
+    position: relative;
+    left: 100%;
+    opacity: 0;
+}
+
+#username_input_container {
+    grid-row: 4;
+    grid-column: 1;
+    z-index: 1;
+    position: relative;
+    left: 100%;
+    opacity: 0;
+}
+
+.login_input_container {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.login_input_container:nth-of-type(2) {
+    margin-top: 25px;
+    grid-row: 5;
+    grid-column: 1;
+    z-index: 1;
+}
+
+.login_input {
+    font-family: Raleway Light;
+    font-size: 26pt;
+    position: absolute;
+    z-index: 1;
+    padding: 0;
+    padding-left: 50px;
+}
+
+.login_input::placeholder {
+    font-family: Raleway Extra Light;
+}
+
+.input_icon {
+    position: relative;
+    z-index: 2;
+    margin-top: 13px;
+    margin-left: 10px;
+}
+
+.login_input_container > h3 {
+    font-family: Oswald Medium;
+    font-size: 20pt;
+    margin: 0;
+    padding: 0;
+}
+
+#password_input_container {
+    grid-row: 5;
+    position: relative;
+    left: 100%;
+    opacity: 0;
+    margin-top: 25px;
+}
+
+#password_input_container > .input_icon {
+    margin-top: 10px;
+}
+
+.forgot_password_link {
+    grid-row: 6;
+    grid-column: 1;
+    z-index: 1;
+    margin-top: 20px;
+    font-family: Raleway Light;
+    font-size: 18pt;
+    color: black;
+    position: relative;
+    left: 100%;
+    opacity: 0;
+}
+
+.forgot_password_link:hover {
+    color: var(--logo-blue);
+}
+
+.forgot_password_link:visited {
+    color: var(--logo-blue);
+}
+
+#remember_me_container {
+    grid-row: 7;
+    grid-column: 1;
+    z-index: 1;
+    height: max-content;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content);
+    position: relative;
+    left: 100%;
+    opacity: 0;
+}
+
+#remember_me_container > h4 {
+    font-family: Raleway Extra Light;
+    font-size: 20pt;
+    grid-row: 1;
+    grid-column: 1;
+    z-index: 1;
+    margin: 0;
+    margin-top: 50px;
+}
+
+.login_remember_checkbox {
+    grid-row: 2;
+    grid-column: 1;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    margin-top: 15px;
+    background-color: white;
+}
+
+.login_remember_checkbox:hover {
+    cursor: pointer;
+}
+
+#remember_me_container > svg {
+    grid-column: 1;
+    grid-row: 2;
+    z-index: 2;
+    pointer-events: none;
+    margin-left: -20px;
+    margin-top: -7px;
+}
+
+.path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+}
+
+.check {
+    stroke-dashoffset: -100;
+}
+
+/* BEGIN forgot password modal */
+#forgot_password_background {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    opacity: 0;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+#forgot_password_container {
+    background-color: white;
+    justify-self: center;
+    align-self: center;
+    border-radius: 25px;
+    padding: 50px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    width: 700px;
+    height: 370px;
+    position: relative;
+    bottom: 100%;
+}
+
+#forgot_password_input_container {
+    display: grid;
+    grid-auto-rows: max-content;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+#forgot_password_input_container > h1 {
+    font-family: Raleway Medium;
+    font-size: 28pt;
+    margin: 0;
+    grid-column: 1 / -1;
+}
+
+#forgot_password_input_container > h3 {
+    font-family: Raleway Light;
+    font-size: 22pt;
+    grid-column: 1 / -1;
+}
+
+#forgot_password_email_container {
+    justify-self: center;
+    grid-column: 1 / -1;
+    width: 80%;
+}
+
+#forgot_password_email_container > h1 {
+    font-family: Oswald Medium;
+    font-size: 22pt;
+    margin: 0;
+}
+
+#forgot_password_email_container > input {
+    font-family: Raleway Light;
+    font-size: 24pt;
+    width: 100%;
+}
+
+#forgot_password_submit_button {
+    margin-top: 50px;
+    font-family: Oswald Medium;
+    font-size: 24pt;
+    color: white;
+    background-color: var(--logo-blue);
+    border: 2px solid var(--logo-blue);
+    width: max-content;
+    border-radius: 15px;
+    padding: 5px 15px 5px 15px;
+    justify-self: center;
+    transition: all 0.15s ease-in;
+}
+
+#forgot_password_submit_button:hover {
+    cursor: pointer;
+    color: var(--logo-blue);
+    background-color: white;
+}
+
+#forgot_password_cancel_button {
+    margin-top: 50px;
+    font-family: Oswald Medium;
+    font-size: 24pt;
+    color: var(--logo-blue);
+    background-color: white;
+    border: 2px solid var(--logo-blue);
+    width: max-content;
+    border-radius: 15px;
+    padding: 5px 15px 5px 15px;
+    justify-self: center;
+    transition: all 0.15s ease-in;
+}
+
+#forgot_password_cancel_button:hover {
+    cursor: pointer;
+    color: white;
+    background-color: var(--logo-blue);
+}
+
+#forgot_password_success_container {
+    display: none;
+    opacity: 0;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(4, max-content);
+}
+
+#forgot_password_success_container > h1 {
+    font-family: Raleway Medium;
+    font-size: 26pt;
+    text-align: center;
+    justify-self: center;
+    margin: 0;
+}
+
+#forgot_password_success_container > h2 {
+    font-family: Raleway Light;
+    font-size: 22pt;
+    text-align: center;
+    justify-self: center;
+    margin: 0;
+    margin-top: 15px;
+}
+
+#forgot_password_success_image {
+    justify-self: center;
+    margin-top: 25px;
+}
+
+#forgot_password_ok_button {
+    font-family: Oswald Medium;
+    font-size: 24pt;
+    color: white;
+    background-color: var(--logo-blue);
+    padding: 5px 15px 5px 15px;
+    border-radius: 15px;
+    border: 2px solid var(--logo-blue);
+    margin-top: 25px;
+    justify-self: center;
+    transition: all 0.15s ease-in;
+}
+
+#forgot_password_ok_button:hover {
+    cursor: pointer;
+    color: var(--logo-blue);
+    background-color: white;
+}
+
+/* END forgot password modal */
+
+@-webkit-keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 1000;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  @-webkit-keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+  
+  @keyframes dash-check {
+    0% {
+      stroke-dashoffset: -100;
+    }
+    100% {
+      stroke-dashoffset: 900;
+    }
+  }
+
+@-webkit-keyframes dash-check-reverse {
+    0% {
+        stroke-dashoffset: 900;
+    }
+    100% {
+        stroke-dashoffset: -100;
+    }
+}
+
+@keyframes dash-check-reverse {
+    0% {
+        stroke-dashoffset: 900;
+    }
+    100% {
+        stroke-dashoffset: -100;
+    }
+}
+
+.login_button {
+    grid-row: 9;
+    width: 250px;
+    height: 75px;
+    font-family: Oswald Medium;
+    font-size: 24pt;
+    background-color: var(--charcoal-grey);
+    color: white;
+    border: 0;
+    margin-top: 50px;
+    border-radius: 0px;
+    transition: background-color 250ms, border-radius 250ms;
+    position: relative;
+    left: 100%;
+    opacity: 0;
+}
+
+.login_button:hover {
+    cursor: pointer;
+    background-color: var(--logo-blue);
+    border-radius: 15px;
+    transition: background-color 250ms, border-radius 250ms;
+}
+
+@media (max-width: 1920px) {
+    #login_container {
+        grid-template-rows: 15% repeat(10, max-content);
+    }
+}
+
+@media (max-width: 1680px) {
+    #login_container {
+        grid-template-rows: 10% repeat(10, max-content);
+    }
+}
+
+@media (max-width: 1440px) {
+    #login_container {
+        grid-template-rows: 0% repeat(10, max-content);
+    }
+
+    .login_button {
+        margin-top: 25px;
+    }
+}
+
+@media (max-width: 1420px) {
+    #side_container {
+        display: none;
+    }
+}

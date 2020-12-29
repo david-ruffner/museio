@@ -1,0 +1,22 @@
+{
+  "name": "SetBuddy",
+  "version": "1.0.0",
+  "description": "The back-end for the SetBuddy app",
+  "main": "tokenauthor.js",
+  "scripts": {
+    "start": "node tokenauthor.js"
+  },
+  "author": "David Ruffner",
+  "license": "ISC",
+  "dependencies": {
+    "@supercharge/strings": "latest",
+    "asn1": "latest",
+    "express": "latest",
+    "jsonwebtoken": "latest",
+    "node-rsa": "latest",
+    "body-parser": "latest",
+    "email-validator": "latest",
+    "node-html-parser": "latest",
+    "mysql": "latest"
+  }
+}

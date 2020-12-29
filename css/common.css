@@ -1,0 +1,38 @@
+/* Common resources shared among all pages */
+
+@font-face {
+    font-family: Oswald Extra Light;
+    src: url(../resources/fonts/Oswald-ExtraLight.ttf);
+}
+
+@font-face {
+    font-family: Oswald Light;
+    src: url(../resources/fonts/Oswald-Light.ttf);
+}
+
+@font-face {
+    font-family: Oswald Medium;
+    src: url(../resources/fonts/Oswald-Medium.ttf);
+}
+
+@font-face {
+    font-family: Raleway Medium;
+    src: url(../resources/fonts/Raleway-Medium.ttf);
+}
+
+@font-face {
+    font-family: Raleway Light;
+    src: url(../resources/fonts/Raleway-Light.ttf);
+}
+
+@font-face {
+    font-family: Raleway Extra Light;
+    src: url(../resources/fonts/Raleway-ExtraLight.ttf);
+}
+
+:root {
+    --logo-blue: #16436a;
+    --charcoal-grey: #323232; 
+    --background-grey: #efefef;
+    --error-box-red: #ff6961;
+}

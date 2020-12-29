@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Muse.io</title>
+        <link rel="stylesheet" href="css/common.css" />
+        <link rel="stylesheet" href="css/login.css" />
+        <link rel="icon" href="./resources/icons/logo.png" />
+
+        <script>
+            // If there's a token in local storage, forward on to the dashboard page.
+            //TODO: Uncomment
+            let user_token = sessionStorage.getItem('museio_user_token');
+            if (!user_token || user_token.length < 1) {
+                user_token = localStorage.getItem("museio_user_token");
+            }
+            
+            if (user_token && user_token.length > 0) {
+                location.replace('https://museio.davidr.pro/dashboard');
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id="side_container">
+            <img src="./resources/icons/logo.png" width="200px"/>
+            <h1>Muse<span>.io</span></h1>
+            <h2>The easy way to keep track of your music, and level up your ability.</h2>
+        </div>
+
+        <div id="login_container">
+            <!-- Used to test the height of text (invisible to the user) -->
+            <div id="text_height_test">
+                <h1>Sorry, something went wrong while logging you in. Please try to login again.</h1>
+            </div>
+
+            <h1>Log Into Muse.io</h1>
+            <div id="status_container">
+                <h1>Sorry, something went wrong while logging you in. Please try to login again.</h1>
+            </div>
+            <div class="login_input_container" id="username_input_container">
+                <h3>EMAIL</h3>
+                <input tabindex="1" type="text" id="username_input" placeholder="bob@gmail.com" class="login_input">
+                <img src="./resources/icons/username_icon.png" class="input_icon" width="17px" />
+            </div>
+            <div class="login_input_container" id="password_input_container">
+                <h3>PASSWORD</h3>
+                <input tabindex="2" type="password" id="password_input" placeholder="Enter Your Password" class="login_input">
+                <img src="./resources/icons/password_icon.png" class="input_icon" width="17px" />
+            </div>
+            <a href="#" tabindex="3" class="forgot_password_link">Forgot Your Password?</a>
+            <div id="remember_me_container">
+                <h4>Remember Me</h4>
+                <div tabindex="4" class="login_remember_checkbox"></div>
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" width="75px">
+                    <polyline class="path check" fill="none" stroke="var(--logo-blue)" stroke-width="9" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+                </svg>
+            </div>
+            <button tabindex="5" class="login_button">Login</button>
+        </div>
+
+        <div id="forgot_password_background">
+            <div id="forgot_password_container">
+                <div id="forgot_password_input_container">
+                    <h1>Forgot Your Password?</h1>
+                    <h3>No worries, if you have an account with us we'll send you a password reset link.</h3>
+                    <div id="forgot_password_email_container">
+                        <h1>EMAIL</h1>
+                        <input type="email" id="forgot_password_email_input">
+                    </div>
+                    <button id="forgot_password_submit_button">Send</button>
+                    <button id="forgot_password_cancel_button">Cancel</button>
+                </div>
+
+                <div id="forgot_password_success_container">
+                    <h1>Email Sent To</h1>
+                    <h2>davidruffner924@gmail.com</h2>
+                    <img id="forgot_password_success_image" width="175"/>
+                    <button id="forgot_password_ok_button">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery CDN -->
+        <script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+        
+        <script src="./resources/common.js"></script>
+        <script src="js/login.js"></script>
+    </body>
+</html>
