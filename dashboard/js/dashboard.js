@@ -57,6 +57,11 @@ function check_dashboard_state() {
 }
 
 $(document).ready(function() {
+    if (client_is_mobile) {
+        $("#sidebar_songbank_container").data().container_state = false;
+        $("#sidebar_songbank_container > .sidebar_category_header_container > .sidebar_category_collapse_icon").removeClass("collapse_icon_open");
+    }
+
     //TODO: In reality, dashboard will also need to be loaded
     container_states.dashboard = true;
 
@@ -67,6 +72,8 @@ $(document).ready(function() {
 
             // Show the dashboard
             $("#loading_container").animate({bottom: '100%', opacity: 0}, 1000);
+
+            $("#sidebar_container").css({overflowY: 'auto', height: 'max-content'})
         }
     }, 250);
 

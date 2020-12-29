@@ -1,3 +1,6 @@
+// Determines if we're on a mobile device or not (starts at width: 1100px)
+var client_is_mobile = false;
+
 // Common resources and functions used across the client side of the app
 const base_api_url = 'https://museio.davidr.pro/museio/api';
 const login_page_url = 'https://museio.davidr.pro/';
