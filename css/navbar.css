@@ -378,11 +378,16 @@ body {
         justify-content: center;
     }
 
+    #loading_container {
+        position: fixed !important;
+        width: 100%;
+        height: 100%;
+    }
+
     #sidebar_container {
         width: 100vw;
         overflow-x: hidden;
-        overflow-y: auto;
-        height: max-content;
+        overflow-y: hidden;
     }
 
     #sidebar_login_container {
@@ -452,5 +457,9 @@ body {
         margin-right: 0;
         width: 35px;
         margin-bottom: 15px;
+    }
+
+    #sidebar_songbank_container > .sidebar_category_options_container {
+        height: 0;
     }
 }

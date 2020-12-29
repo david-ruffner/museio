@@ -446,48 +446,63 @@ function prepare_nav_bar() {
     })
 }
 
+// Processes that must happen when the client has gone mobile
+// These things can't be done in pure CSS because stylesheets would have already loaded
+function client_went_mobile() {
+    // Resize each category options header container for mobile if they are expanded
+    $(".sidebar_category_options_container").each(function() {
+        if ($(this).parent().data().container_state) {
+            let num_children = $(this).children(".sidebar_category_options_header_container").length;
+            let new_container_height = num_children * 171;
+            $(this).css("height", `${new_container_height}px`);
+        }
+    })
+
+    $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
+        if ($(this).parent().data().container_state) {
+            let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
+            console.log(num_children);
+            let new_container_height = num_children * 171;
+            $(this).parent().css("height", `${new_container_height}px`);
+        }
+    })
+
+    $("#sidebar_container").css({overflowY: 'auto', height: 'max-content'})
+}
+
+// Processes that must happen when the client has gone desktop
+function client_went_desktop() {
+    // Resize each category options header container for desktop
+    $(".sidebar_category_options_container").each(function() {
+        if ($(this).parent().data().container_state) {
+            let num_children = $(this).children(".sidebar_category_options_header_container").length;
+            let new_container_height = num_children * 75;
+            $(this).css("height", `${new_container_height}px`);
+        }
+    })
+
+    $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
+        if ($(this).parent().data().container_state) {
+            let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
+            let new_container_height = num_children * 75;
+            $(this).parent().css("height", `${new_container_height}px`);
+        }
+    })
+
+    $("#sidebar_container").css({overflowY: 'auto', height: 'max-content'})
+}
+
 $(window).resize(function() {
     if ($(document).width() <= 1100) {
         if (!client_is_mobile) {
             client_is_mobile = true;
-            // Resize each category options header container for mobile if they are expanded
-            $(".sidebar_category_options_container").each(function() {
-                if ($(this).parent().data().container_state) {
-                    let num_children = $(this).children(".sidebar_category_options_header_container").length;
-                    let new_container_height = num_children * 171;
-                    $(this).css("height", `${new_container_height}px`);
-                }
-            })
-
-            $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
-                if ($(this).parent().data().container_state) {
-                    let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
-                    console.log(num_children);
-                    let new_container_height = num_children * 171;
-                    $(this).parent().css("height", `${new_container_height}px`);
-                }
-            })
+            client_went_mobile();
         }
     }
     else {
         if (client_is_mobile) {
             client_is_mobile = false;
-            // Resize each category options header container for desktop
-            $(".sidebar_category_options_container").each(function() {
-                if ($(this).parent().data().container_state) {
-                    let num_children = $(this).children(".sidebar_category_options_header_container").length;
-                    let new_container_height = num_children * 75;
-                    $(this).css("height", `${new_container_height}px`);
-                }
-            })
-
-            $(".user_options_container").children(".sidebar_category_options_header_container").each(function() {
-                if ($(this).parent().data().container_state) {
-                    let num_children = 1 + $(this).siblings(".sidebar_category_options_header_container").length;
-                    let new_container_height = num_children * 75;
-                    $(this).parent().css("height", `${new_container_height}px`);
-                }
-            })
+            client_went_desktop();
         }
     }
 })
