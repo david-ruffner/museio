@@ -29,29 +29,6 @@ function app_critical_failure(message_override = false) {
 //     return user_token;
 // }
 
-function parse_get_parameters() {
-    if (location.search.length < 1) {
-        return null;
-    }
-    else {
-        var parameters = [];
-        location.search
-            .substr(1)
-            .split("&")
-            .forEach(function (item) {
-                let temp = item.split("=");
-                parameters.push(
-                    {
-                        parameter_name: temp[0],
-                        parameter_value: temp[1]
-                    }
-                )
-            });
-
-        return parameters;
-    }
-}
-
 function check_dashboard_state() {
     
 }

@@ -14,6 +14,30 @@ const container_states = {
     dashboard: false
 }
 
+// Parses the GET parameters in the current URL
+function parse_get_parameters() {
+    if (location.search.length < 1) {
+        return null;
+    }
+    else {
+        var parameters = [];
+        location.search
+            .substr(1)
+            .split("&")
+            .forEach(function (item) {
+                let temp = item.split("=");
+                parameters.push(
+                    {
+                        parameter_name: temp[0],
+                        parameter_value: temp[1]
+                    }
+                )
+            });
+
+        return parameters;
+    }
+}
+
 // Updates container states, called from various functions.
 function update_container_states(container_name, required_container_names) {
     return new Promise((resolve, reject) => {
