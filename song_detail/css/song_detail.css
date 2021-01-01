@@ -1,0 +1,138 @@
+/* body CSS rules can be found in /resources/navbar.js */
+
+#song_detail_container {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: max-content auto;
+}
+
+#song_detail_title_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content);
+}
+
+#song_detail_title {
+    font-family: Raleway Light;
+    font-size: 32pt;
+    font-weight: 600;
+    justify-self: center;
+    text-align: center;
+    color: black;
+}
+
+#song_detail_artists {
+    font-family: Raleway Light;
+    font-size: 26pt;
+    font-weight: 300;
+    justify-self: center;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+#song_detail_title_divider {
+    width: 30%;
+    justify-self: center;
+    border-bottom: 3px solid #e2e2e2;
+}
+
+#song_detail_cards_container {
+    display: grid;
+    margin-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: max-content;
+    column-gap: 100px;
+    row-gap: 150px;
+}
+
+.song_detail_card {
+    background-color: var(--background-grey);
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: max-content auto;
+    height: max-content;
+}
+
+.song_detail_card_title {
+    grid-column: 1 / -1;
+    justify-self: center;
+    text-align: center;
+    background-color: var(--songbank-cta);
+    color: white;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 15px;
+    box-sizing: border-box;
+    font-family: Raleway Light;
+    font-size: 24pt;
+}
+
+.song_detail_card_body_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: max-content;
+}
+
+#song_detail_past_performance_card > .song_detail_card_body_container {
+    margin-top: 25px;
+}
+
+.song_detail_body_title {
+    justify-self: center;
+    text-align: center;
+    font-family: Raleway Light;
+    font-size: 20pt;
+    grid-column: 1 / -1;
+}
+
+#performance_start_date_filter,
+#performance_end_date_filter {
+    font-family: Raleway Light;
+    font-size: 20pt;
+    justify-self: center;
+    text-align: center;
+}
+
+#past_performance_chart {
+    grid-column: 1 / -1;
+    justify-self: center;
+    border: 1px solid black;
+}
+
+.song_detail_card_body_container > input {
+    width: 75%;
+    justify-self: center;
+    font-family: Raleway Light;
+    font-size: 18pt;
+    justify-self: center;
+    margin-bottom: 25px;
+}
+
+.song_detail_status_message_container {
+    grid-column: 1 / -1;
+    border-radius: 15px;
+    background-color: white;
+    width: max-content;
+    max-width: 75%;
+    justify-self: center;
+    /* margin-top: 25px; */
+    /* margin: 0;
+    padding: 0; */
+    display: none;
+    overflow: hidden;
+}
+
+.song_detail_status_message_container > h1 {
+    justify-self: center;
+    text-align: center;
+    font-family: Raleway Light;
+    font-size: 18pt;
+    color: var(--error-box-red);
+    margin: 10px;
+    padding: 0;
+}

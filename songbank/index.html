@@ -74,7 +74,7 @@
                         <img class='sidebar_category_collapse_icon collapse_icon_open' width='30' src='../resources/images/white_arrow.png'>
                     </div>
                     <div class='sidebar_category_options_container'>
-                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='my_songs'> 
+                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='my_songs, song_detail'>
                             <h2 class='sidebar_category_options_header'>My Songs</h2>
                             <img class='sidebar_category_options_icon' width='25' src='../resources/images/double_line_music_note.png'>
                         </div>
@@ -195,7 +195,8 @@
             </div>
             <div id="alphabetical_sort_container">
                 <div id="alphabetical_choice_container">
-                    <h2 tabindex="5" class="alphabetical_choice active_alphabetical_choice">A</h2>
+                    <h2 tabindex="5" class="alphabetical_choice active_alphabetical_choice">All</h2>
+                    <h2 tabindex="5" class="alphabetical_choice">A</h2>
                     <h2 tabindex="6" class="alphabetical_choice">B</h2>
                     <h2 tabindex="7" class="alphabetical_choice">C</h2>
                     <h2 tabindex="8" class="alphabetical_choice">D</h2>
@@ -223,9 +224,14 @@
                     <h2 tabindex="30" class="alphabetical_choice">Z</h2>
                     <h2 tabindex="31" class="alphabetical_choice">0-9</h2>
                 </div>
+
+                <div id="no_results_song_detail_container">
+                    <h1>No Results</h1>
+                </div>
+
                 <div data-alphabetical_letter="a" data-sort_type="alphabetical" class="sort_display_header">
                     <h1>A</h1>
-                    <img tabindex="32" class="sort_display_header_toggle" src="../resources/images/white_arrow.png" width="30"/>
+                    <img tabindex="32" class="sort_display_header_toggle collapse_icon_open" src="../resources/images/white_arrow.png" width="30"/>
                 </div>
                 <div data-container_state="true" data-alphabetical_letter="a" class="songbank_display_container alphabetical_display_container">
                     <div class="songbank_display_table_header alphabetical_display_table_header">
@@ -233,7 +239,7 @@
                         <h1>Artist</h1>
                         <h1>Genre</h1>
                     </div>
-                    <div class="songbank_display_song alphabetical_display_song">
+                    <!-- <div class="songbank_display_song alphabetical_display_song">
                         <h1>River Flows In You</h1>
                         <h1>Yiruma</h1>
                         <h1>Piano</h1>
@@ -242,6 +248,318 @@
                         <h1>Sonatina</h1>
                         <h1>Joseph Haydn</h1>
                         <h1>Piano</h1>
+                    </div> -->
+                </div>
+
+                <div data-alphabetical_letter='b' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>B</h1>
+                    <img tabindex='33' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='b' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+
+                <div data-alphabetical_letter='c' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>C</h1>
+                    <img tabindex='34' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='c' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='d' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>D</h1>
+                    <img tabindex='35' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='d' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='e' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>E</h1>
+                    <img tabindex='36' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='e' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='f' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>F</h1>
+                    <img tabindex='37' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='f' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='g' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>G</h1>
+                    <img tabindex='38' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='g' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='h' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>H</h1>
+                    <img tabindex='39' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='h' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='i' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>I</h1>
+                    <img tabindex='40' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='i' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='j' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>J</h1>
+                    <img tabindex='41' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='j' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='k' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>K</h1>
+                    <img tabindex='42' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='k' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='l' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>L</h1>
+                    <img tabindex='43' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='l' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='m' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>M</h1>
+                    <img tabindex='44' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='m' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='n' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>N</h1>
+                    <img tabindex='45' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='n' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='o' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>O</h1>
+                    <img tabindex='46' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='o' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='p' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>P</h1>
+                    <img tabindex='47' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='p' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='q' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>Q</h1>
+                    <img tabindex='48' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='q' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='r' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>R</h1>
+                    <img tabindex='49' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='r' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='s' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>S</h1>
+                    <img tabindex='50' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='s' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='t' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>T</h1>
+                    <img tabindex='51' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='t' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='u' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>U</h1>
+                    <img tabindex='52' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='u' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='v' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>V</h1>
+                    <img tabindex='53' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='v' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='w' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>W</h1>
+                    <img tabindex='54' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='w' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='x' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>X</h1>
+                    <img tabindex='55' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='x' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='y' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>Y</h1>
+                    <img tabindex='56' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='y' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='z' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>Z</h1>
+                    <img tabindex='57' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='z' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
+                    </div>
+                </div>
+                
+                <div data-alphabetical_letter='0-9' data-sort_type='alphabetical' class='sort_display_header'>
+                    <h1>0-9</h1>
+                    <img tabindex='58' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                </div>
+                <div data-container_state='true' data-alphabetical_letter='0-9' class='songbank_display_container alphabetical_display_container'>
+                    <div class='songbank_display_table_header alphabetical_display_table_header'>
+                        <h1>Name</h1>
+                        <h1>Artist</h1>
+                        <h1>Genre</h1>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,18 @@ app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
 const authorize_include = require('./backend_includes/authorize_include');
 const common_include = require('./backend_includes/common_include');
+// const cors = require('cors');
+// app.use(cors());
+// app.options("*", cors());
+
+app.use(function(req, res, next) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
+// app.options("/museio/api/songbank/filter_performance_dates", cors());
 
 var Response = common_include.Response;
 
@@ -90,7 +102,199 @@ function init_program(connection_limit_override = false, config_name_override = 
     })
 }
 
-app.post("/museio/api/songbank/get_all_songs", (req, res) => {
+app.post("/museio/api/songbank/filter_performance_dates", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for a start and end date
+        if (!req.body.start_date || req.body.start_date.length < 1){
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_start_date`, `A start_date parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_start_date = req.body.start_date.trim();
+
+            try {
+                given_start_date = new Date(given_start_date);
+                let month_modifier = ((given_start_date.getMonth() + 1) < 10) ? `0${given_start_date.getMonth() + 1}` : given_start_date.getMonth() + 1;
+                let day_modifier = (given_start_date.getDate() < 10) ? `0${given_start_date.getDate()}` : given_start_date.getDate();
+                given_start_date = `${given_start_date.getFullYear()}-${month_modifier}-${day_modifier}`;
+            }
+            catch (ex) {
+                return res.status(400).send(
+                   JSON.stringify(new Response(`invalid_start_date`, `Your given start_date '${given_start_date}' is not a valid date. Please provide dates in YYYY-MM-DD format.`))
+                )
+            }
+        }
+
+        if (!req.body.end_date || req.body.end_date.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_end_date`, `An end_date parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_end_date = req.body.end_date.trim();
+            
+            try {
+                given_end_date = new Date(given_end_date);
+                let month_modifier = ((given_end_date.getMonth() + 1) < 10) ? `0${given_end_date.getMonth() + 1}` : given_end_date.getMonth() + 1;
+                let day_modifier = (given_end_date.getDate() < 10) ? `0${given_end_date.getDate()}` : given_end_date.getDate();
+                given_end_date = `${given_end_date.getFullYear()}-${month_modifier}-${day_modifier}`;
+            }
+            catch (ex) {
+                return res.status(400).send(
+                   JSON.stringify(new Response(`invalid_end_date`, `Your given end_date '${given_end_date}' is not a valid date.`))
+                )
+            }
+        }
+
+        // Check for a song_id parameter
+        if (!req.body.song_id || req.body.song_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_song_id`, `A song_id parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_song_id = req.body.song_id.trim();
+        }
+
+        // Query the database with the new values
+        let performance_query = `SELECT Songs.Song_ID, Songs.Name as Song_Name, SongPerformances.Performance_Rating, SongPerformances.Practice_Date FROM museio.Songs
+        LEFT JOIN SongPerformances ON Songs.Song_ID = SongPerformances.Song_ID
+        WHERE SongPerformances.Practice_Date >= DATE(?) AND SongPerformances.Practice_Date <= DATE(?) AND Songs.Song_ID = ?
+        ORDER BY Songs.Song_ID, SongPerformances.Practice_Date`
+
+        program_init.connection.query(performance_query, [given_start_date, given_end_date, given_song_id], (err, result) => {
+            if (err) {
+                return_object.song_performance = 'error';
+            }
+            else if (result.length < 1) {
+                return_object.song_performance = 'no_results';
+            }
+            else {
+                return_object.song_performance = result;
+            }
+
+            return res.status(200).send(
+                JSON.stringify(new Response(`success`, return_object))
+            )
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
+app.get("/museio/api/songbank/get_song_details", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for a song_id param
+        if (!req.query.song_id || req.query.song_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_song_id`, `A song_id parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_song_id = decodeURIComponent(req.query.song_id.trim());
+        }
+
+        var return_object = {
+            song_details: null,
+            song_performance: null
+        }
+
+        // Get song details
+        let sql_query = `SELECT Songs.Song_ID, Songs.Name as Song_Name, Songs.Genre, Songs.Book_Page_Start, Songs.Book_Page_Finish,
+        Artists.Artist_ID, Artists.Name as Artist_Name,
+        CustomGenres.Custom_Genre_ID, CustomGenres.Name as Custom_Genre,
+        Books.Book_ID, Books.Name as Book_Name, Books.Picture as Book_Picture,
+        SheetMusic.Sheet_Music_ID, SheetMusic.Name as Sheet_Music_Name, SheetMusic.CoverPhoto as Sheet_Music_Cover_Photo
+        FROM Songs
+        LEFT JOIN Artists ON Songs.Artist_ID = Artists.Artist_ID
+        LEFT JOIN CustomGenres ON Songs.Custom_Genre_ID = CustomGenres.Custom_Genre_ID
+        LEFT JOIN Books ON Songs.Book_ID = Books.Book_ID
+        LEFT JOIN SheetMusic ON SheetMusic.Song_ID = Songs.Song_ID
+        LEFT JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+        LEFT JOIN Users ON SongBank.User_ID = Users.User_ID
+        WHERE Users.Email_Address = ? AND Songs.Song_ID = ?`;
+
+        program_init.connection.query(sql_query, [result.user_email_address, given_song_id], (err, result) => {
+            if (err) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, something went wrong while fetching your given song's details.`))
+                )
+            }
+
+            if (result.length < 1) {
+                return res.status(200).send(
+                   JSON.stringify(new Response(`no_results`, `Your given song ID '${given_song_id}' did not return any results`))
+                )
+            }
+            else {
+                return_object.song_details = result;
+
+                // Get this song's past performance going back a month by default
+                let current_date_obj = new Date();
+                let previous_date_obj = new Date();
+                previous_date_obj.setMonth(current_date_obj.getMonth() - 1);
+                let current_date = `${current_date_obj.getFullYear()}-${current_date_obj.getMonth() + 1}-${current_date_obj.getDate()}`
+                let previous_date = `${previous_date_obj.getFullYear()}-${previous_date_obj.getMonth() + 1}-${previous_date_obj.getDate()}`
+                
+                let performance_query = `SELECT Songs.Song_ID, Songs.Name as Song_Name, SongPerformances.Performance_Rating, SongPerformances.Practice_Date FROM museio.Songs
+                LEFT JOIN SongPerformances ON Songs.Song_ID = SongPerformances.Song_ID
+                WHERE SongPerformances.Practice_Date >= DATE(?) AND SongPerformances.Practice_Date <= DATE(?) AND Songs.Song_ID = ?
+                ORDER BY Songs.Song_ID, SongPerformances.Practice_Date`
+
+                program_init.connection.query(performance_query, [previous_date_obj, current_date_obj, given_song_id], (err, result) => {
+                    if (err) {
+                        return_object.song_performance = 'error';
+                    }
+                    else if (result.length < 1) {
+                        return_object.song_performance = 'no_results';
+                    }
+                    else {
+                        return_object.song_performance = result;
+                    }
+
+                    return res.status(200).send(
+                       JSON.stringify(new Response(`success`, return_object))
+                    )
+                })
+            }
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
+app.get("/museio/api/songbank/get_all_songs", (req, res) => {
     // Pull the token from the auth bearer header
     if (!req.headers.authorization) {
         return res.status(400).send(

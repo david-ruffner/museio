@@ -394,8 +394,15 @@ function prepare_nav_bar() {
                 
                 // Get the sidebar category option that should be active, and highlight it.
                 let active_category_option = $(".sidebar_category_options_header_container").filter(function() {
-                    if ($(this).data().url_param && $(this).data().url_param === current_category_option.parameter_value) {
-                        return true;
+                    if ($(this).data().url_param) {
+                        let url_params = $(this).data().url_param.split(",");
+                        url_params.forEach((param, index) => {
+                            url_params[index] = param.trim();
+                        })
+                        
+                        if (url_params.includes(current_category_option.parameter_value)) {
+                            return true;
+                        }
                     }
                 })
                 if (active_category_option) {

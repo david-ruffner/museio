@@ -1,0 +1,242 @@
+<!doctype html>
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+
+        <title>Song Detail</title>
+        <meta name='description' content='Provides more details about a particular song'>
+        <meta name='author' content='David Ruffner'>
+
+        <link rel='stylesheet' href='../css/common.css'>
+        <link rel='stylesheet' href='../css/navbar.css'>
+        <link rel='stylesheet' href='./css/song_detail.css'>
+
+        <!-- Check for user token -->
+        <script>
+            // Try to get from session storage first
+            let user_token = sessionStorage.getItem('museio_user_token');
+            if (!user_token || user_token.length < 1) {
+                // Try to get from local storage
+                user_token = localStorage.getItem('museio_user_token');
+                if (!user_token || user_token.length < 1) {
+                    // Logout
+                    location.replace('https://museio.davidr.pro'); 
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <!-- <div id='loading_container'>
+            <div id='loading_top_container'>
+                <img src='../resources/icons/logo.png' width='125'>
+                <h2>Muse.<span>io</span></h2>
+                <h1>Loading Your Dashboard</h1>
+            </div>
+            <div id='loading_bottom_container'>
+                <img class='loading_gif' src='../resources/images/loading_gif.gif' width='250'/>
+            </div>
+        </div> -->
+        <div id='sidebar_container'>
+            <div id='sidebar_options_container'>
+                <div id='sidebar_login_container' class='sidebar_category_container'>
+                    <img class='user_profile_picture'>
+                    <h1>Hi, David</h1>
+                    <img class='user_options_toggle' src='../resources/images/white_arrow.png' width='35'>
+                </div>
+                <div data-container_state='false' class='sidebar_category_options_container user_options_container'>
+                    <div class='sidebar_category_options_header_container' data-page='user_page' data-url_param='change_user_info'> 
+                        <h2 class='sidebar_category_options_header'>User Info</h2>
+                        <img class='sidebar_category_options_icon' width='25' src='../resources/images/user_info_icon.png'>
+                    </div>
+                    <div class='sidebar_category_options_header_container' data-page='user_page' data-url_param='user_settings'>
+                        <h2 class='sidebar_category_options_header'>User Settings</h2>
+                        <img class='sidebar_category_options_icon' width='25' src='../resources/images/user_settings_icon.png'>
+                    </div>
+                    <div class='sidebar_category_options_header_container' data-open_modal='reset_password'>
+                        <h2 class='sidebar_category_options_header'>Reset Password</h2>
+                        <img class='sidebar_category_options_icon' width='25' src='../resources/images/reset_password_icon.png'>
+                    </div>
+                    <div class='sidebar_category_options_header_container' data-other_action='logout'>
+                        <h2 class='sidebar_category_options_header'>Logout</h2>
+                        <img class='sidebar_category_options_icon' width='25' src='../resources/images/logout_icon.png'>
+                    </div>
+                </div>
+                <div id='sidebar_dashboard_button' class='sidebar_category_container'>
+                    <div class='sidebar_category_header_container not_category_tray' data-url_param='dashboard'>
+                        <h1 class='sidebar_category_header' draggable='false'>DASHBOARD</h1>
+                    </div>
+                </div>
+                <div id='sidebar_songbank_container' data-container_state='true' class='sidebar_category_container'>
+                    <div class='sidebar_category_header_container' >
+                        <h1 class='sidebar_category_header' draggable='false'>SONG BANK</h1>
+                        <img class='sidebar_category_collapse_icon collapse_icon_open' width='30' src='../resources/images/white_arrow.png'>
+                    </div>
+                    <div class='sidebar_category_options_container'>
+                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='my_songs'> 
+                            <h2 class='sidebar_category_options_header'>My Songs</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/double_line_music_note.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='songs_report'>
+                            <h2 class='sidebar_category_options_header'>Songs Report</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/songbank_reports_icon.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='songs_report'>
+                            <h2 class='sidebar_category_options_header'>Artists</h2>
+                            <img class='sidebar_category_options_icon' width='30' src='../resources/images/song_artists_icon.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='songbank' data-url_param='songs_report'>
+                            <h2 class='sidebar_category_options_header'>Genres</h2>
+                            <img class='sidebar_category_options_icon' width='30' src='../resources/images/song_genre_icon.png'>
+                        </div>
+                    </div>
+                </div>
+                <div id='sidebar_setlists_container' data-container_state='false' class='sidebar_category_container'>
+                    <div class='sidebar_category_header_container' draggable='false'>
+                        <h1 class='sidebar_category_header'>SET LISTS</h1>
+                        <img class='sidebar_category_collapse_icon' width='30' src='../resources/images/white_arrow.png'>
+                    </div>
+                    <div class='sidebar_category_options_container'>
+                        <div class='sidebar_category_options_header_container' data-page='setlists' data-url_param='my_set_lists'>
+                            <h2 class='sidebar_category_options_header'>My Set Lists</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/setlist_category_icon.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='setlists' data-url_param='set_lists_report'>
+                            <h2 class='sidebar_category_options_header'>Set Lists Report</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/setlist_reports_category_icon.png'>
+                        </div>
+                    </div>
+                </div>
+                <div id='sidebar_scales_container' data-container_state='false' class='sidebar_category_container'>
+                    <div class='sidebar_category_header_container' draggable='false'>
+                        <h1 class='sidebar_category_header'>SCALES</h1>
+                        <img class='sidebar_category_collapse_icon' width='30' src='../resources/images/white_arrow.png'>
+                    </div>
+                    <div class='sidebar_category_options_container'>
+                        <div class='sidebar_category_options_header_container' data-page='scales' data-url_param='my_scales'>
+                            <h2 class='sidebar_category_options_header'>My Scales</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/scales_category_icon.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='scales' data-url_param='scales_reports'>
+                            <h2 class='sidebar_category_options_header'>Scales Reports</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/scales_reports_category_icon.png'>
+                        </div>
+                    </div>
+                </div>
+                <div id='sidebar_sheetmusic_container' data-container_state='false' class='sidebar_category_container'>
+                    <div class='sidebar_category_header_container' draggable='false'>
+                        <h1 class='sidebar_category_header'>SHEET MUSIC</h1>
+                        <img class='sidebar_category_collapse_icon' width='30' src='../resources/images/white_arrow.png'>
+                    </div>
+                    <div class='sidebar_category_options_container'>
+                        <div class='sidebar_category_options_header_container' data-page='scales' data-url_param='my_scales'>
+                            <h2 class='sidebar_category_options_header'>My Library</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/sheet_music_library_icon.png'>
+                        </div>
+                        <div class='sidebar_category_options_header_container' data-page='scales' data-url_param='scales_reports'>
+                            <h2 class='sidebar_category_options_header'>Import</h2>
+                            <img class='sidebar_category_options_icon' width='25' src='../resources/images/sheet_music_import_icon.png'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id='reset_password_background'>
+            <div id='reset_password_container'>
+                <div id='reset_password_text_height_test'>
+                    <h1>Sorry, something went wrong while logging you in. Please try to login again.</h1>
+                </div>
+
+                <div id='reset_password_inputs_container'>
+                    <h1>Change Your Password</h1>
+                    <div class='reset_password_container_divider'></div>
+
+                    <div id='reset_password_status_container'>
+                        <h1>Sorry, something went wrong while logging you in. Please try to login again.</h1>
+                    </div>
+
+                    <div class='reset_password_input_container'>
+                        <h2>CURRENT PASSWORD</h2>
+                        <input type='password' id='reset_password_current_input'>
+                    </div>
+                    <div class='reset_password_input_container'>
+                        <h2>NEW PASSWORD</h2>
+                        <input type='password' id='reset_password_new_input'>
+                    </div>
+                    <button id='reset_password_submit_button'>Reset</button>
+                    <button class='reset_password_cancel_button'>Cancel</button>
+                </div>
+                <div id='reset_password_success_status_container'>
+                    <h1>Success!</h1>
+                    <h2>Your password was changed</h2>
+                    <button class='reset_password_cancel_button'>Close</button>
+                    <button id='reset_password_logout_button'>Log Out</button>
+                </div>
+                <div id='reset_password_error_status_container'>
+                    <h1>Oops</h1>
+                    <h2>Something went wrong</h2>
+                    <button class='reset_password_cancel_button'>Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="song_detail_container">
+            <div id="song_detail_title_container">
+                <h1 id="song_detail_title">River Flows In You</h1>
+                <h2 id="song_detail_artists">Yiruma</h2>
+                <div id="song_detail_title_divider"></div>
+            </div>
+            <div id="song_detail_cards_container">
+                <div id="song_artist_detail_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Artist</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Yiruma</h2>
+                    </div>
+                </div>
+                <div id="song_detail_past_performance_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Past Performance</h1>
+                    <div class="song_detail_card_body_container">
+                        <div class="song_detail_status_message_container">
+                            <h1></h1>
+                        </div>
+                        <h2 id="performance_start_date_filter">Start Date</h2>
+                        <h2 id="performance_end_date_filter">End Date</h2>
+                        <input type="date" id="performance_start_date_input">
+                        <input type="date" id="performance_end_date_input">
+                        <div id="past_performance_chart"></div>
+                    </div>
+                </div>
+                <div id="song_detail_genre_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Genre</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Piano</h2>
+                    </div>
+                </div>
+                <div id="song_detail_book_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Book</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Test</h2>
+                    </div>
+                </div>
+                <div id="song_detail_sheet_music_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Sheet Music</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Test</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery CDN -->
+        <script
+        src='https://code.jquery.com/jquery-3.5.1.js'
+        integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc='
+        crossorigin='anonymous'></script>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src='../resources/common.js'></script>
+        <script src='../resources/navbar.js'></script>
+        <script src='./js/song_detail.js'></script>
+    </body>
+</html>

@@ -79,6 +79,7 @@
     grid-template-columns: auto;
     grid-auto-rows: max-content;
     overflow: auto;
+    margin-bottom: 50px;
 }
 
 #alphabetical_choice_container {
@@ -86,7 +87,7 @@
     justify-self: center;
     margin-top: 25px;
     display: grid;
-    grid-template-columns: repeat(26, 80px) 125px;
+    grid-template-columns: 100px repeat(26, 80px) 125px;
     grid-template-rows: minmax(50px, 1fr);
     overflow-x: scroll;
     height: 125px;
@@ -133,7 +134,8 @@
     margin-top: 75px;
     width: 85%;
     justify-self: center;
-    display: grid;
+    display: none;
+    opacity: 0;
     grid-template-rows: max-content;
     grid-template-columns: repeat(2, 1fr);
     background-color: var(--songbank-cta);
@@ -189,6 +191,11 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
+.alphabetical_display_container {
+    display: none;
+    opacity: 0;
+}
+
 .songbank_display_song {
     width: 85%;
     justify-self: center;
@@ -218,4 +225,18 @@
     font-size: 20pt;
     margin: 0;
     align-self: center;
+}
+
+#no_results_song_detail_container {
+    justify-self: center;
+    align-self: center;
+    margin-top: 125px;
+    display: none;
+    opacity: 0;
+}
+
+#no_results_song_detail_container > h1 {
+    font-family: Raleway Light;
+    font-size: 36pt;
+    font-weight: 300;
 }
