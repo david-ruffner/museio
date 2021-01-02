@@ -101,7 +101,7 @@ $(window).on('resize', function(e) {
 // When a dashboard view button is clicked
 $(document).on("click", "#dashboard_view_button_container > h1:not(.active_dashboard_view_button)", function() {
     let selected_index = $(this).index();
-    let selected_id = `#${$(this).text().toLowerCase().replace(/\s+/g, "_")}_dashboard`
+    let selected_id = `#${$(this).text().toLocaleLowerCase().replace(/\s+/g, "_")}_dashboard`
     let hidden_property = $(selected_id).data().hidden_property;
 
     $(`#dashboard_view_button_container > h1:eq(${current_dashboard_view.index})`).removeClass("active_dashboard_view_button");
@@ -116,7 +116,7 @@ $(document).on("click", "#dashboard_view_button_container > h1:not(.active_dashb
         let index_difference = selected_index - current_dashboard_view.index;
         if (index_difference > 1) {
             for (var i = current_dashboard_view.index + 1; i < selected_index; i++) {
-                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLowerCase().replace(/\s+/g, "_") + "_dashboard";
+                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLocaleLowerCase().replace(/\s+/g, "_") + "_dashboard";
                 console.log(middle_id);
                 $(middle_id).css({right: '', left: '100%'}).data().hidden_property = 'left';
             }
@@ -128,7 +128,7 @@ $(document).on("click", "#dashboard_view_button_container > h1:not(.active_dashb
         let index_difference = current_dashboard_view.index - selected_index;
         if (index_difference > 1) {
             for (var i = current_dashboard_view.index - 1; i > selected_index; i--) {
-                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLowerCase().replace(/\s+/g, "_") + "_dashboard";
+                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLocaleLowerCase().replace(/\s+/g, "_") + "_dashboard";
                 console.log(middle_id);
                 $(middle_id).css({left: '', right: '100%'}).data().hidden_property = 'right';
             }

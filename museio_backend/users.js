@@ -190,7 +190,7 @@ app.post(`${base_api_path}/reset_password`, (req, res) => {
 
             // Prepare a hash to check if the given current password is correct
             let current_comparator_hash = crypto.createHash("sha512").update(user_account.Salt + given_current_password).digest('hex');
-            if (current_comparator_hash.toLowerCase() !== user_account.Hash.toLowerCase()) {
+            if (current_comparator_hash.toLocaleLowerCase() !== user_account.Hash.toLocaleLowerCase()) {
                 return res.status(200).send(
                    JSON.stringify(new Response(`incorrect_current_password`, `Your given current password is incorrect.`))
                 )

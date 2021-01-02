@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+
+        <title>Muse.io Book Details</title>
+        <meta name='description' content='Shows the user information and details about a specified book'>
+        <meta name='author' content='David Ruffner'>
+
+        <link rel="stylesheet" href="../resources/loading_container.css">
+        <link rel='stylesheet' href='../css/common.css'>
+        <link rel='stylesheet' href='../css/navbar.css'>
+        <link rel='stylesheet' href='./css/book_detail.css'>
+
+        <!-- Check for user token -->
+        <script>
+            // Try to get from session storage first
+            let user_token = sessionStorage.getItem('museio_user_token');
+            if (!user_token || user_token.length < 1) {
+                // Try to get from local storage
+                user_token = localStorage.getItem('museio_user_token');
+                if (!user_token || user_token.length < 1) {
+                    // Logout
+                    location.replace('https://museio.davidr.pro'); 
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+
+        <div id="book_detail_container">
+            <div id="book_detail_title_container">
+                <h1 id="book_detail_title">Schirmer's Library Sonatina Album For The Piano</h1>
+                <h2 id="book_detail_artists">Schirmer</h2>
+                <div id="book_detail_title_divider"></div>
+            </div>
+            <div id="book_detail_info_container">
+                <img id="book_cover_photo" src="../resources/images/book_cover.png" width="225">
+                <h1 id="book_total_pages_header">127 Pages</h1>
+            </div>
+            <div id="book_detail_toc_container">
+                <div id="toc_header_container">
+                    <h1 class="toc_header">Table of Contents</h1>
+                    <img class="sort_display_header_toggle collapse_icon_open" src="../resources/images/white_arrow.png" width="33"/>
+                </div>
+                <div class="toc_entry_header_container">
+                    <h1>Song</h1>
+                    <h1>Page Numbers</h1>
+                    <h1>Options</h1>
+                </div>
+                <div class="toc_entry_container">
+                    <h1>Sonatina</h1>
+                    <h1>Pages 62 - 71</h1>
+                    <div class="toc_icon">
+                        <img class="toc_view_file_icon underlay_icon" src="../resources/images/view_file_icon.png" width="45" height="55"/>
+                        <img class="toc_view_file_icon overlay_icon" src="../resources/images/view_file_icon_overlay.png" width="45" height="55"/>
+                    </div>
+                    <div class="toc_option_divider"></div>
+                    <div class="toc_icon">
+                        <img class="toc_download_file_icon underlay_icon" src="../resources/images/download_file_icon.png" width="45" height="55"/>
+                        <img class="toc_download_file_icon overlay_icon" src="../resources/images/download_file_icon_overlay.png" width="45" height="55"/>
+                    </div>
+                    <div class="toc_option_divider"></div>
+                    <div class="toc_icon">
+                        <img class="toc_email_file_icon underlay_icon" src="../resources/images/email_file_icon.png" width="60" height="45"/>
+                        <img class="toc_email_file_icon overlay_icon" src="../resources/images/email_file_icon_overlay.png" width="60" height="45"/>
+                    </div>
+                    <div class="toc_option_divider"></div>
+                    <div class="toc_icon">
+                        <img class="toc_remove_from_book_icon underlay_icon" src="../resources/images/remove_icon.png" width="50" height="50"/>
+                        <img class="toc_remove_from_book_icon overlay_icon" src="../resources/images/remove_icon_overlay.png" width="50" height="50"/>
+                    </div>
+                </div>
+            </div>
+
+        <!-- jQuery CDN -->
+        <script
+        src='https://code.jquery.com/jquery-3.5.1.js'
+        integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc='
+        crossorigin='anonymous'></script>
+
+        <script src='../resources/common.js'></script>
+        <script src='../resources/navbar.js'></script>
+        <script src='./js/book_detail.js'></script>
+    </body>
+</html>

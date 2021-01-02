@@ -32,8 +32,11 @@
 
 :root {
     --logo-blue: #16436a;
-    --charcoal-grey: #323232; 
-    --background-grey: #efefef;
+    --brighter-logo-blue: #125c9c;
+    --charcoal-grey: #323232;
+    --lighter-background-grey: #efefef;
+    --background-grey: #dddddd;
+    --message-background-grey: #eaeaea;
     --error-box-red: #ff6961;
     --cta-red: #d44626;
     --songbank-cta: #5ABCB9;

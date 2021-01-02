@@ -20,13 +20,6 @@ const common_include = require('./backend_includes/common_include');
 // app.use(cors());
 // app.options("*", cors());
 
-app.use(function(req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    res.setHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-
 // app.options("/museio/api/songbank/filter_performance_dates", cors());
 
 var Response = common_include.Response;
@@ -102,6 +95,167 @@ function init_program(connection_limit_override = false, config_name_override = 
     })
 }
 
+app.get("/museio/api/songbank/get_artist_info", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for an artist_id param
+        if (!req.query.artist_id || req.query.artist_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_artist_id`, `An artist_id param was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_artist_id = decodeURIComponent(req.query.artist_id.trim());
+        }
+
+        let user_email_address = result.user_email_address;
+        let sql_query = `SELECT Artists.Name AS Artist_Name,
+        Songs.Song_ID, Songs.Name as Song_Name, COALESCE(Songs.Genre, CustomGenres.Name) as Genre FROM Artists
+        INNER JOIN Songs ON Songs.Artist_ID = Artists.Artist_ID
+        LEFT JOIN CustomGenres ON Songs.Custom_Genre_ID = CustomGenres.Custom_Genre_ID
+        INNER JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+        INNER JOIN Users ON SongBank.User_ID = Users.User_ID
+        WHERE Users.Email_Address = ? AND Artists.Artist_ID = ?`;
+
+        program_init.connection.query(sql_query, [user_email_address, given_artist_id], (err, result) => {
+            if (err) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, something went wrong while getting info about your given artist. Please try again.`))
+                )
+            }
+            else if (result.length < 1) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, we couldn't find that artist in our system. Please contact the developer.`))
+                )
+            }
+            else {
+                var return_object = {
+                    artist_name: result[0].Artist_Name,
+                    artist_songs: []
+                }
+                        
+                result.forEach(row => {
+                    let first_letter = row.Song_Name[0].toLocaleLowerCase();
+                    let ret_obj = return_object.artist_songs.find(obj => obj.letter_name === first_letter);
+                    if (ret_obj != undefined) {
+                        ret_obj.songs.push(row);
+                    }
+                    else {
+                        let new_obj = {
+                            letter_name: first_letter,
+                            songs: []
+                        };
+                        return_object.artist_songs.push(new_obj);
+
+                        new_obj = return_object.artist_songs.find(obj => obj.letter_name === first_letter);
+                        new_obj.songs.push(row);
+                    }
+                })
+
+                // Sort each result object's song results by song name ascending
+                return_object.artist_songs = return_object.artist_songs.sort((a, b) => a.letter_name.localeCompare(b.letter_name));
+
+                // Sort the results by artist name ascending
+                return_object.artist_songs.forEach(artist_song => {
+                    artist_song.songs = artist_song.songs.sort((a, b) => a.Song_Name.localeCompare(b.Song_Name))
+                })
+
+                return res.status(200).send(
+                   JSON.stringify(new Response(`success`, return_object))
+                )
+            }
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
+app.post("/museio/api/songbank/edit_artist", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for an artist_id param
+        if (!req.body.artist_id || req.body.artist_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_artist_id`, `An artist_id param was either not given, or was empty.`))
+            )
+        }
+        else {
+            var given_artist_id = req.body.artist_id.trim();
+        }
+
+        // Check for a new_artist_name param
+        if (!req.body.new_artist_name || req.body.new_artist_name.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_new_artist_name`, `A new_artist_name param was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_new_artist_name = req.body.new_artist_name.trim();
+            if (!common_include.edit_input_constraints.artist_name.constraint.test(given_new_artist_name)) {
+                return res.status(400).send(
+                   JSON.stringify(new Response(`invalid_new_artist_name`, `Your given_new_artist_name param '${given_new_artist_name}' was invalid. ${common_include.edit_input_constraints.artist_name.error_message}.`))
+                )
+            }
+        }
+
+        let user_email_address = result.user_email_address;
+        let sql_query = `UPDATE Artists
+        INNER JOIN Songs ON Songs.Artist_ID = Artists.Artist_ID
+        INNER JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+        INNER JOIN Users ON SongBank.User_ID = Users.User_ID
+        SET Artists.Name = ?
+        WHERE Users.Email_Address = ? AND Artists.Artist_ID = ?`
+
+        program_init.connection.query(sql_query, [given_new_artist_name, user_email_address, given_artist_id], (err, result) => {
+            if (err) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, something went wrong while updating the artist's name.`))
+                )
+            }
+            else if (result.affectedRows < 1) {
+                return res.status(500).send(
+                    JSON.stringify(new Response(`internal_error`, `Sorry, something went wrong while updating the artist's name.`))
+                )
+            }
+            else {
+                return res.status(200).send(
+                   JSON.stringify(new Response(`success`, `Artist name was updated to '${given_new_artist_name}'.`))
+                )
+            }
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
 app.post("/museio/api/songbank/filter_performance_dates", (req, res) => {
     // Pull the token from the auth bearer header
     if (!req.headers.authorization) {
@@ -116,6 +270,11 @@ app.post("/museio/api/songbank/filter_performance_dates", (req, res) => {
     // Authorize the token
     authorize_include.authorize_token(given_token, program_init)
     .then(result => {
+        var return_object = {
+            song_details: null,
+            song_performance: null
+        }
+        
         // Check for a start and end date
         if (!req.body.start_date || req.body.start_date.length < 1){
             return res.status(400).send(
@@ -256,6 +415,13 @@ app.get("/museio/api/songbank/get_song_details", (req, res) => {
             }
             else {
                 return_object.song_details = result;
+                if (return_object.song_details[0].Book_Picture) {
+                    return_object.song_details[0].Book_Picture = Buffer.from(return_object.song_details[0].Book_Picture).toString("base64");
+                }
+
+                if (return_object.song_details[0].Sheet_Music_Cover_Photo) {
+                    return_object.song_details[0].Sheet_Music_Cover_Photo = Buffer.from(return_object.song_details[0].Sheet_Music_Cover_Photo).toString("base64");
+                }
 
                 // Get this song's past performance going back a month by default
                 let current_date_obj = new Date();
@@ -286,6 +452,148 @@ app.get("/museio/api/songbank/get_song_details", (req, res) => {
                 })
             }
         })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
+app.get("/museio/api/songbank/get_songs_by_filter", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for a filter param
+        if (!req.query.filter || req.query.filter.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_filter_param`, `A filter param was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_filter = decodeURIComponent(req.query.filter.trim());
+
+            // Determine the order by filter to use for the sql query
+            var order_by_filter = null;
+            let given_user_email_address = result.user_email_address;
+            let sql_query = null;
+
+            switch (given_filter) {
+                case "artist":
+                    order_by_filter = "ORDER BY Artists.Name";
+
+                    sql_query = `SELECT Songs.Song_ID, Songs.Name as Song_Name, Artists.Name as Artist_Name, Songs.Genre, CustomGenres.Name as Custom_Genre FROM Songs
+                    LEFT JOIN Artists ON Songs.Artist_ID = Artists.Artist_ID
+                    LEFT JOIN CustomGenres ON Songs.Custom_Genre_ID = CustomGenres.Custom_Genre_ID
+                    INNER JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+                    INNER JOIN Users ON SongBank.User_ID = Users.User_ID
+                    WHERE Users.Email_Address = ?`;
+
+                    program_init.connection.query(sql_query, [given_user_email_address], (err, result) => {
+                        if (err) {
+                            return res.status(500).send(
+                            JSON.stringify(new Response(`internal_error`, `Sorry, we couldn't get your songs at this time. Please try again.`))
+                            )
+                        }
+
+                        let return_object = [];
+                        
+                        result.forEach(row => {
+                            let ret_obj = return_object.find(obj => obj.artist_name === row.Artist_Name);
+                            if (ret_obj != undefined) {
+                                ret_obj.song_results.push(row);
+                            }
+                            else {
+                                return_object.push(
+                                    {
+                                        artist_id: row.Artist_ID,
+                                        artist_name: row.Artist_Name,
+                                        song_results: [row]
+                                    }
+                                )
+                            }
+                        })
+
+                        // Sort each result object's song results by song name ascending
+                        return_object.forEach(ro => {
+                            ro.song_results = ro.song_results.sort((a, b) => a.Song_Name.localeCompare(b.Song_Name));
+                        })
+
+                        // Sort the results by artist name ascending
+                        return_object = return_object.sort((a, b) => a.artist_name.localeCompare(b.artist_name))
+
+                        return res.status(200).send(
+                            JSON.stringify(new Response(`success`, return_object))
+                        )
+                    })
+                    break;
+
+                case "genre":
+                    order_by_filter = "ORDER BY Genre"
+
+                    sql_query = `SELECT Songs.Song_ID, Songs.Name as Song_Name, Artists.Name as Artist_Name, CustomGenres.Custom_Genre_ID, COALESCE(Songs.Genre, CustomGenres.Name) as Genre FROM Songs
+                    LEFT JOIN Artists ON Songs.Artist_ID = Artists.Artist_ID
+                    LEFT JOIN CustomGenres ON Songs.Custom_Genre_ID = CustomGenres.Custom_Genre_ID
+                    INNER JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+                    INNER JOIN Users ON SongBank.User_ID = Users.User_ID
+                    WHERE Users.Email_Address = ?
+                    ORDER BY Genre`;
+
+                    program_init.connection.query(sql_query, [given_user_email_address], (err, result) => {
+                        if (err) {
+                            return res.status(500).send(
+                            JSON.stringify(new Response(`internal_error`, `Sorry, we couldn't get your songs at this time. Please try again.`))
+                            )
+                        }
+
+                        let return_object = [];
+                        
+                        result.forEach(row => {
+                            let ret_obj = return_object.find(obj => obj.genre_name === row.Genre);
+                            if (ret_obj != undefined) {
+                                ret_obj.song_results.push(row);
+                            }
+                            else {
+                                return_object.push(
+                                    {
+                                        genre_id: row.Genre_ID,
+                                        genre_name: row.Genre,
+                                        song_results: [row]
+                                    }
+                                )
+                            }
+                        })
+                        
+                        // Sort each result object's song results by song name ascending
+                        return_object.forEach(ro => {
+                            ro.song_results = ro.song_results.sort((a, b) => a.Song_Name.localeCompare(b.Song_Name));
+                        })
+                        
+                        // Sort the results by genre name ascending
+                        return_object = return_object.sort((a, b) => a.genre_name.localeCompare(b.genre_name))
+
+                        return res.status(200).send(
+                            JSON.stringify(new Response(`success`, return_object))
+                        )
+                    })
+                    break;
+
+                default:
+                    return res.status(400).send(
+                       JSON.stringify(new Response(`invalid_filter`, `Your given filter param '${given_filter}' is invalid.`))
+                    )
+            }
+        }
     })
     .catch(error => {
         return res.status(error.status_code).send(

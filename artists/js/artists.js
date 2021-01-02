@@ -1,38 +1,40 @@
 $(document).on("click", ".sort_display_header_toggle", function() {
     $(this).toggleClass("collapse_icon_open");
 
-    let sort_type = $(this).parent().data().sort_type;
-    switch (sort_type) {
-        case 'alphabetical':
-            let selected_letter = $(this).parent().data().alphabetical_letter;
+    let selected_artist = $(this).parent().data().artist_name;
             
-            let display_container = $(".alphabetical_display_container").filter(function() {
-                if ($(this).data().alphabetical_letter && $(this).data().alphabetical_letter === selected_letter) {
-                    return true;
-                }
+    let display_container = $(".alphabetical_display_container").filter(function() {
+        if ($(this).data().artist_name && $(this).data().artist_name === selected_artist) {
+            return true;
+        }
+    })
+
+    if (display_container) {
+        let container_state = display_container.data().container_state;
+        if (container_state) {
+            // Record the current height of the container
+            display_container.data({
+                container_height: `${Math.ceil(display_container.height())}px`,
+                container_state: false
             })
 
-            if (display_container) {
-                let container_state = display_container.data().container_state;
-                if (container_state) {
-                    // Record the current height of the container
-                    display_container.data({
-                        container_height: `${Math.ceil(display_container.height())}px`,
-                        container_state: false
-                    })
-
-                    // Close the container
-                    display_container.animate({height: 0}, 250);
-                }
-                else {
-                    // Open the container
-                    console.log(display_container.data().container_height);
-                    display_container.animate({height: display_container.data().container_height}, 250)
-                    .data({container_state: true});
-                }
-            }
-            break;
+            // Close the container
+            display_container.animate({height: 0}, 250);
+        }
+        else {
+            // Open the container
+            console.log(display_container.data().container_height);
+            display_container.animate({height: display_container.data().container_height}, 250)
+            .data({container_state: true});
+        }
     }
+
+    // let sort_type = $(this).parent().data().sort_type;
+    // switch (sort_type) {
+    //     case 'alphabetical':
+            
+    //         break;
+    // }
 })
 
 $(document).ready(function() {
@@ -42,7 +44,7 @@ $(document).ready(function() {
     if (user_token) {
         // Call the API
         $.ajax({
-            url: 'https://museio.davidr.pro/museio/api/songbank/get_all_songs',
+            url: 'https://museio.davidr.pro/museio/api/songbank/get_songs_by_filter?filter=artist',
             type: 'GET',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('Authorization', `Bearer ${user_token}`)
@@ -51,41 +53,41 @@ $(document).ready(function() {
                 result = JSON.parse(result).message;
                 console.log(result);
                 result.forEach(row => {
-                    let starting_song_letter = row.Song_Name.substr(0, 1).toLocaleLowerCase();
+                    let artist_id = row.artist_id;
+                    let artist_name = row.artist_name;
+                    let artist_first_letter = (/^[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/.test(artist_name)) ? '0-9' : artist_name[0].toLocaleLowerCase();
 
-                    let song_display = $(
-                        `<div data-song_id='${row.Song_ID}' class="songbank_display_song alphabetical_display_song">
-                            <h1>${row.Song_Name}</h1>
-                            <h1>${row.Artist_Name}</h1>
-                            <h1>${(row.Genre && row.Genre.length > 0) ? row.Genre : row.Custom_Genre}</h1>
+                    let song_display_container = $(
+                        `<div data-alphabetical_letter='${artist_first_letter}' data-artist_name='${artist_name}' data-sort_type='alphabetical' class='sort_display_header'>
+                            <h1>${artist_name}</h1>
+                            <img tabindex='40' class='sort_display_header_toggle collapse_icon_open' src='../resources/images/white_arrow.png' width='30'/>
+                        </div>
+                        <div data-container_state='true' data-alphabetical_letter='${artist_first_letter}' data-artist_name="${artist_name}" class='songbank_display_container alphabetical_display_container'>
+                            <div class='songbank_display_table_header alphabetical_display_table_header'>
+                                <h1>Name</h1>
+                                <h1>Artist</h1>
+                                <h1>Genre</h1>
+                            </div>
                         </div>`
                     )
 
-                    // Test if the starting letter is alphabetical or numerical/special character
-                    if (/^[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]$/.test(starting_song_letter)) {                        
-                        // Put the song in the numerical container
-                        $(".alphabetical_display_container").filter(function() {
-                            return $(this).data().alphabetical_letter === '0-9'
-                        }).append(song_display);
-                    }
-                    else {
-                        // Put the song in an alphabet container
-                        $(".alphabetical_display_container").filter(function() {
-                            return $(this).data().alphabetical_letter === starting_song_letter;
-                        }).append(song_display);
-                    }
+                    // Put each of the artist's songs in its respsective container
+                    row.song_results.forEach(song => {
+                        let song_display = $(
+                            `<div data-song_id='${song.Song_ID}' class="songbank_display_song alphabetical_display_song">
+                                <h1>${song.Song_Name}</h1>
+                                <h1>${song.Artist_Name}</h1>
+                                <h1>${(song.Genre && song.Genre.length > 0) ? song.Genre : song.Custom_Genre}</h1>
+                            </div>`
+                        )
+
+                        song_display_container.children(".songbank_display_table_header").parent().append(song_display);
+                    })
+
+                    $("#alphabetical_sort_container").append(song_display_container);
                 })
 
-                // For each alphabetical display container that has children, fade it in.
-                $(".alphabetical_display_container").filter(function() {
-                    if ($(this).children(".alphabetical_display_song").length > 0) {
-                        return true;
-                    }
-                }).each(function() {
-                    // TODO: Remove
-                    $(this).prev().css({display: 'grid'}).animate({opacity: 1}, 250);
-                    $(this).css({display: 'grid'}).animate({opacity: 1}, 250);
-                })
+                $(".sort_display_header, .songbank_display_container").css({display: 'grid'}).animate({opacity: 1}, 250);
             },
             error: function(error) {
                 console.log(error);

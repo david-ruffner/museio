@@ -68,7 +68,30 @@ $(".sidebar_category_options_header_container").click(function() {
         handle_other_action($(this).data().other_action);
     }
     else {
-        alert("Oops, looks like that button isn't hooked up yet. Please contact the developer.");
+        let url = `https://museio.davidr.pro/${$(this).data().page}`;
+        window.open(url, '_self');
+    }
+})
+
+// When a sidebar category is middle clicked, open it in a new tab.
+$(".sidebar_category_options_header_container").mousedown(function(e) {
+    switch (e.which) {
+        case 2:
+            if ($(this).data().url_param && $(this).data().url_param.length > 0) {
+                let url = ($(this).data().page && $(this).data().page.length > 0) ? `https://museio.davidr.pro/${$(this).data().page}?category_option=${$(this).data().url_param}` : `${dashboard_page_url}?category_option=${$(this).data().url_param}`;
+                window.open(url, '_blank');
+            }
+            else if ($(this).data().open_modal && $(this).data().open_modal.length > 0) {
+                open_modal($(this).data().open_modal);
+            }
+            else if ($(this).data().other_action && $(this).data().other_action.length > 0) {
+                handle_other_action($(this).data().other_action);
+            }
+            else {
+                let url = `https://museio.davidr.pro/${$(this).data().page}`;
+                window.open(url, '_blank');
+            }
+            break;
     }
 })
 
@@ -384,6 +407,7 @@ function prepare_nav_bar() {
     // Set the current category option if applicable
     let get_params = parse_get_parameters();
     if (get_params) {
+        console.log(get_params);
         let current_category_option = get_params.find(param => param.parameter_name === "category_option");
         if (current_category_option) {
             if (current_category_option.parameter_value === 'dashboard') {
@@ -414,6 +438,24 @@ function prepare_nav_bar() {
                     active_category_option.toggleClass('active_category_option');
                 }
             }
+        }
+    }
+    else {
+        // Get the current page, and find the active choice by that
+        let current_page = window.location.pathname.replace(/[\\\/]/g, "");
+        $("#sidebar_dashboard_button > .sidebar_category_header_container").toggleClass("active_category_option");
+                
+        // Get the sidebar category option that should be active, and highlight it.
+        let active_category_option = $(".sidebar_category_options_header_container").filter(function() {
+            return ($(this).data().page && $(this).data().page === current_page);
+        })
+        if (active_category_option) {
+            // De-activate the current category option
+            $(".active_category_option").each(function() {
+                $(this).toggleClass("active_category_option");
+            })
+
+            active_category_option.toggleClass('active_category_option');
         }
     }
 

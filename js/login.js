@@ -290,8 +290,8 @@ function user_login() {
 
                                 // Go to the dashboard page
                                 // TODO: Remove (used for vscode live development)
-                                window.open(`http://127.0.0.1:5500/songbank/?category_option=my_songs`, '_self');
-                                // window.open(`${dashboard_page_url}?category_option=dashboard`, '_self');
+                                // window.open(`http://127.0.0.1:5500/songbank/?category_option=my_songs`, '_self');
+                                window.open(`${dashboard_page_url}?category_option=dashboard`, '_self');
                             }
                             break;
                     }

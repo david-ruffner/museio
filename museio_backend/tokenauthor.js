@@ -190,7 +190,7 @@ app.post("/museio/api/tokenauthor/login", (req, res) => {
             let comparator_hash = crypto.createHash("sha512").update(user_account.Salt + given_password).digest('hex');
 
             // Check if the comparator hash equals the user's hash
-            if (comparator_hash.toLowerCase() != user_account.Hash.toLowerCase()) {
+            if (comparator_hash.toLocaleLowerCase() != user_account.Hash.toLocaleLowerCase()) {
                 return res.status(200).send(
                    JSON.stringify(new Response(`incorrect_username_or_password`, `Your given username or password was incorrect.`))
                 )

@@ -1,0 +1,199 @@
+/* body CSS rules can be found in /resources/navbar.js */
+
+#book_detail_container {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content) auto;
+}
+
+#book_detail_title_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content);
+}
+
+#book_detail_title {
+    font-family: Raleway Light;
+    font-size: 32pt;
+    font-weight: 600;
+    justify-self: center;
+    text-align: center;
+    color: black;
+}
+
+#book_detail_artists {
+    font-family: Raleway Light;
+    font-size: 26pt;
+    font-weight: 300;
+    justify-self: center;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+#book_detail_title_divider {
+    width: 50%;
+    justify-self: center;
+    border-bottom: 3px solid #e2e2e2;
+}
+
+#book_detail_info_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: max-content;
+}
+
+#book_cover_photo {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 25px;
+}
+
+#book_total_pages_header {
+    grid-column: 1 / -1;
+    justify-self: center;
+    text-align: center;
+    font-family: Raleway Light;
+    font-weight: 300;
+    font-size: 24pt;
+}
+
+#book_detail_toc_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-rows: max-content;
+}
+
+#toc_header_container {
+    grid-column: 1 / -1;
+    justify-self: center;
+    background-color: var(--songbank-cta);
+    width: 75%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1.75fr 1fr;
+}
+
+.toc_header {
+    margin: 0;
+    margin: 10px;
+    justify-self: right;
+    text-align: center;
+    font-family: Raleway Light;
+    color: white;
+    font-size: 28pt;
+}
+
+#toc_header_container > img {
+    align-self: center;
+    margin-left: 15px;
+}
+
+#toc_header_container > img:hover {
+    cursor: pointer;
+}
+
+.toc_entry_header_container {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 75%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 3fr 3fr 1fr max-content 1fr max-content 1fr max-content 1fr;
+    background-color: var(--charcoal-grey);
+}
+
+.toc_entry_header_container > h1 {
+    font-family: Raleway Light;
+    font-size: 22pt;
+    justify-self: center;
+    text-align: center;
+    color: white;
+}
+
+.toc_entry_header_container > h1:last-of-type {
+    grid-column: span 7;
+}
+
+.toc_entry_container {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 75%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 3fr 3fr 1fr max-content 1fr max-content 1fr max-content 1fr;
+}
+
+.toc_entry_container > h1 {
+    font-family: Raleway Light;
+    font-size: 22pt;
+    justify-self: center;
+    text-align: center;
+}
+
+.toc_entry_container:nth-of-type(odd) {
+    background-color: var(--background-grey);
+}
+
+.toc_entry_container:nth-of-type(even) {
+    background-color: var(--lighter-background-grey);
+}
+
+.toc_icon {
+    /* border-right: 1px solid black;
+    border-left: 1px solid black; */
+    width: max-content;
+    justify-self: center;
+    align-self: center;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    height: 100%;
+    width: 90%;
+    transition: background-color 0.15s ease-in;
+}
+
+.toc_icon:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+.toc_icon:hover > .overlay_icon {
+    opacity: 1;
+}
+
+.toc_icon > img {
+    justify-self: center;
+    align-self: center;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.toc_icon > .underlay_icon {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;
+}
+
+.toc_icon > .overlay_icon {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.15s ease-in;
+}
+
+.toc_icon > .overlay_icon:hover {
+    
+}
+
+.toc_option_divider {
+    width: max-content;
+    border-left: 1.5px solid black;
+    height: 85%;
+    justify-self: center;
+    align-self: center;
+}
