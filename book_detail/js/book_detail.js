@@ -7,4 +7,6 @@ $(document).ready(function() {
     let book_container_width = Math.ceil($("#book_detail_container").width());
 
     $("#book_detail_title_divider").css({width: ((div_width >= book_container_width) ? '90%' : `${div_width}px`)});
+
+    $("#pdf_view").attr("src", pdf_64);
 })

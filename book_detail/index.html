@@ -56,30 +56,51 @@
                     <div class="toc_icon">
                         <img class="toc_view_file_icon underlay_icon" src="../resources/images/view_file_icon.png" width="45" height="55"/>
                         <img class="toc_view_file_icon overlay_icon" src="../resources/images/view_file_icon_overlay.png" width="45" height="55"/>
+                        <div class="toc_icon_tooltip">
+                            <h1>View Song</h1>
+                        </div>
                     </div>
                     <div class="toc_option_divider"></div>
                     <div class="toc_icon">
                         <img class="toc_download_file_icon underlay_icon" src="../resources/images/download_file_icon.png" width="45" height="55"/>
                         <img class="toc_download_file_icon overlay_icon" src="../resources/images/download_file_icon_overlay.png" width="45" height="55"/>
+                        <div class="toc_icon_tooltip">
+                            <h1>Download Song</h1>
+                        </div>
                     </div>
                     <div class="toc_option_divider"></div>
                     <div class="toc_icon">
                         <img class="toc_email_file_icon underlay_icon" src="../resources/images/email_file_icon.png" width="60" height="45"/>
                         <img class="toc_email_file_icon overlay_icon" src="../resources/images/email_file_icon_overlay.png" width="60" height="45"/>
+                        <div class="toc_icon_tooltip">
+                            <h1>Email Song</h1>
+                        </div>
                     </div>
                     <div class="toc_option_divider"></div>
                     <div class="toc_icon">
                         <img class="toc_remove_from_book_icon underlay_icon" src="../resources/images/remove_icon.png" width="50" height="50"/>
                         <img class="toc_remove_from_book_icon overlay_icon" src="../resources/images/remove_icon_overlay.png" width="50" height="50"/>
+                        <div class="toc_icon_tooltip">
+                            <h1>Remove Song From This Book</h1>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="pdf_view_container">
+            <iframe id="pdf_view"></iframe>
+        </div>
 
         <!-- jQuery CDN -->
         <script
         src='https://code.jquery.com/jquery-3.5.1.js'
         integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc='
         crossorigin='anonymous'></script>
+
+        <script src="./js/pdf_base64.js"></script>
+
+        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
 
         <script src='../resources/common.js'></script>
         <script src='../resources/navbar.js'></script>

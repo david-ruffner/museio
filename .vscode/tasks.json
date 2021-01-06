@@ -1,0 +1,47 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "pm2",
+            "type": "shell",
+            "command": "pm2 ${input:pm2_action} ${input:pm2_service}",
+            "problemMatcher": [],
+            "presentation": {
+                "focus": true
+            }
+        },
+        {
+            "label": "nginx_edit_config",
+            "type": "shell",
+            "command": "sudo nano /etc/nginx/sites-enabled/museio.davidr.pro",
+            "problemMatcher": [],
+            "presentation": {
+                "focus": true
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "pm2_action",
+            "description": "Select a PM2 action",
+            "options": [
+                "start",
+                "stop"
+            ]
+        },
+        {
+            "type": "pickString",
+            "id": "pm2_service",
+            "description": "Select a PM2 microservice",
+            "options": [
+                "dashboard",
+                "songbank",
+                "tokenauthor",
+                "users"
+            ]
+        }
+    ]
+}

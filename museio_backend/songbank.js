@@ -16,11 +16,6 @@ app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
 const authorize_include = require('./backend_includes/authorize_include');
 const common_include = require('./backend_includes/common_include');
-// const cors = require('cors');
-// app.use(cors());
-// app.options("*", cors());
-
-// app.options("/museio/api/songbank/filter_performance_dates", cors());
 
 var Response = common_include.Response;
 

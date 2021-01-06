@@ -1,3 +1,7 @@
+const base_api_url = 'https://museio.davidr.pro/museio/api';
+const login_page_url = 'https://museio.davidr.pro/';
+const dashboard_page_url = 'https://museio.davidr.pro/dashboard'
+
 // Keeps the state of the remember me checkbox
 var remember_me = false;
 
