@@ -29,31 +29,33 @@ function app_critical_failure(message_override = false) {
 //     return user_token;
 // }
 
-function parse_get_parameters() {
-    if (location.search.length < 1) {
-        return null;
-    }
-    else {
-        var parameters = [];
-        location.search
-            .substr(1)
-            .split("&")
-            .forEach(function (item) {
-                let temp = item.split("=");
-                parameters.push(
-                    {
-                        parameter_name: temp[0],
-                        parameter_value: temp[1]
-                    }
-                )
-            });
-
-        return parameters;
-    }
-}
-
 function check_dashboard_state() {
     
+}
+
+// Keeps track of the positions of the dashboard view marker positions
+var dashboard_view_marker_positions = [];
+
+var current_dashboard_view = {
+    id: "#recent_practices_dashboard",
+    index: 0
+};
+
+// Handles where to put the dashboard view marker and its positions depending on the screen width
+function calculate_dashboard_view_positions() {
+    dashboard_view_marker_positions = [];
+
+    let dashboard_container_width = $("#dashboard_view_button_container").width();
+    let dashboard_button_width = Math.floor(dashboard_container_width / 4);
+    let current_view_marker_width = Math.floor(dashboard_button_width / 2);
+    let view_marker_start =  Math.floor(current_view_marker_width / 2);
+
+    for (var i = 0; i < 4; i++) {
+        dashboard_view_marker_positions.push(view_marker_start);
+        view_marker_start += dashboard_button_width;
+    }
+
+    $("#current_dashboard_view_marker").css({width: current_view_marker_width, left: dashboard_view_marker_positions[current_dashboard_view.index]})
 }
 
 $(document).ready(function() {
@@ -61,6 +63,8 @@ $(document).ready(function() {
         $("#sidebar_songbank_container").data().container_state = false;
         $("#sidebar_songbank_container > .sidebar_category_header_container > .sidebar_category_collapse_icon").removeClass("collapse_icon_open");
     }
+
+    calculate_dashboard_view_positions();
 
     //TODO: In reality, dashboard will also need to be loaded
     container_states.dashboard = true;
@@ -71,111 +75,71 @@ $(document).ready(function() {
             clearInterval(check_dashboard_state_loop_id);
 
             // Show the dashboard
-            $("#loading_container").animate({bottom: '100%', opacity: 0}, 1000);
+            // TODO: Uncomment
+            // $("#loading_container").animate({bottom: '100%', opacity: 0}, 1000);
 
-            $("#sidebar_container").css({overflowY: 'auto', height: 'max-content'})
+            // $("#sidebar_container").css({overflowY: 'auto', height: 'max-content'})
         }
     }, 250);
+})
 
-    // update_container_states('dashboard', ['dashboard', 'sidebar'])
-    // .then(function(result) {
-    //     if (result) {
-    //         console.log("finished loading");
-    //     }
-    // })
-    // .catch(function(error) {
-    //     console.log(error);
-    // })
+var resizeTimer = false;
 
-    // // Try to get the user's dashboard info with their token
-    // let user_token = get_user_token();
+$(window).on('resize', function(e) {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        resizeTimer = false;
+        $(window).trigger('resizeend');
+    }, 250);
+
+}).on('resizeend', function(){
+	if (!client_is_mobile) {
+        calculate_dashboard_view_positions();
+    }
+});
+
+// When a dashboard view button is clicked
+$(document).on("click", "#dashboard_view_button_container > h1:not(.active_dashboard_view_button)", function() {
+    let selected_index = $(this).index();
+    let selected_id = `#${$(this).text().toLocaleLowerCase().replace(/\s+/g, "_")}_dashboard`
+    let hidden_property = $(selected_id).data().hidden_property;
+
+    $(`#dashboard_view_button_container > h1:eq(${current_dashboard_view.index})`).removeClass("active_dashboard_view_button");
+    $(this).addClass("active_dashboard_view_button");
+
+    // Slide the tracker
+    $("#current_dashboard_view_marker").animate({left: dashboard_view_marker_positions[selected_index]}, 250);
+
+    if (selected_index > current_dashboard_view.index) {
+        $(current_dashboard_view.id).css({right: ''}).animate({left: '100%'}, 250).data().hidden_property = 'left';
+
+        let index_difference = selected_index - current_dashboard_view.index;
+        if (index_difference > 1) {
+            for (var i = current_dashboard_view.index + 1; i < selected_index; i++) {
+                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLocaleLowerCase().replace(/\s+/g, "_") + "_dashboard";
+                console.log(middle_id);
+                $(middle_id).css({right: '', left: '100%'}).data().hidden_property = 'left';
+            }
+        }
+    }
+    else {
+        $(current_dashboard_view.id).css({left: ''}).animate({right: '100%'}, 250).data().hidden_property = 'right';
+
+        let index_difference = current_dashboard_view.index - selected_index;
+        if (index_difference > 1) {
+            for (var i = current_dashboard_view.index - 1; i > selected_index; i--) {
+                let middle_id = "#" + $(`#dashboard_view_button_container > h1:eq(${i})`).text().toLocaleLowerCase().replace(/\s+/g, "_") + "_dashboard";
+                console.log(middle_id);
+                $(middle_id).css({left: '', right: '100%'}).data().hidden_property = 'right';
+            }
+        }
+    }
+
+    let animate_property = {};
+    animate_property[hidden_property] = 0;
     
-    // if (user_token) {
-    //     $.ajax({
-    //         url: `${base_api_url}/dashboard/get_dashboard`,
-    //         type: 'GET',
-    //         beforeSend: function(xhr) {
-    //             xhr.setRequestHeader('Authorization', `Bearer ${user_token}`)
-    //         },
-    //         success: function(result) {
-    //             try {
-    //                 result = JSON.parse(result);
-    //                 console.log(result);
+    $(selected_id).animate(animate_property, 250);
 
-    //                 // Check the result status for different actions
-    //                 switch (result.status) {
-    //                     case "invalid_token":
-    //                     case "internal_error":
-    //                     case "incorrect_username_or_password":
-    //                         return log_user_out();
-    //                 }
-
-    //                 // If the result has a new token extra param, override the current local storage token with this new one.
-    //                 if (result.extra_parameters && result.extra_parameters.new_token) {
-    //                     localStorage.setItem("museio_user_token", result.extra_parameters.new_token);
-    //                 }
-
-    //                 // Set the current category option if applicable
-    //                 let get_params = parse_get_parameters();
-    //                 if (get_params) {
-    //                     let current_category_option = get_params.find(param => param.parameter_name === "category_option");
-    //                     if (current_category_option) {
-    //                         if (current_category_option.parameter_value === 'dashboard') {
-    //                             $("#sidebar_dashboard_button > .sidebar_category_header_container").toggleClass("active_category_option");
-    //                         }
-    //                         else {
-    //                             $("#sidebar_dashboard_button > .sidebar_category_header_container").toggleClass("active_category_option");
-                                
-    //                             // Get the sidebar category option that should be active, and highlight it.
-    //                             let active_category_option = $(".sidebar_category_options_header_container").filter(function() {
-    //                                 if ($(this).data().url_param && $(this).data().url_param === current_category_option.parameter_value) {
-    //                                     return true;
-    //                                 }
-    //                             })
-    //                             if (active_category_option) {
-    //                                 // De-activate the current category option
-    //                                 $(".active_category_option").each(function() {
-    //                                     $(this).toggleClass("active_category_option");
-    //                                 })
-
-    //                                 active_category_option.toggleClass('active_category_option');
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-
-    //                 // Set information about the user's profile if it was returned
-    //                 if (result.extra_parameters) {
-    //                     // Set the profile photo
-    //                     if (result.extra_parameters.user_profile_photo && result.extra_parameters.user_profile_photo.length > 0) {
-    //                         $(".user_profile_picture").attr("src", `data:image/png;base64,${result.extra_parameters.user_profile_photo}`);
-    //                     }
-    //                     else {
-    //                         // Set a blank profile photo
-    //                         $(".user_profile_picture").attr("src", '../../resources/images/blank_profile.png');
-    //                     }
-
-    //                     // Set the user's first name
-    //                     if (result.extra_parameters.user_first_name && result.extra_parameters.user_first_name.length > 0) {
-    //                         $("#sidebar_login_container > h1").text(`Hi, ${result.extra_parameters.user_first_name}`);
-    //                     }
-    //                     else {
-    //                         // Set a generic title in place of a name
-    //                         $("#sidebar_login_container > h1").text("Muse.io");
-    //                     }
-    //                 }
-    //                 if (result.extra_parameters && result.extra_parameters.profile_photo
-    //                     && result.extra_parameters.profile_photo.length > 0) {
-                        
-    //                 }
-    //             }
-    //             catch (ex) {
-    //                 app_critical_failure();
-    //             }
-    //         },
-    //         error: function(error) {
-    //             log_user_out();
-    //         }
-    //     })
-    // }
+    current_dashboard_view.id = selected_id;
+    current_dashboard_view.index = selected_index;
 })

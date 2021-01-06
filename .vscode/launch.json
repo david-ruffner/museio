@@ -31,6 +31,16 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
+        },
+
+        {
+            "name": "Launch Song Bank API",
+            "program": "${workspaceFolder}/museio_backend/songbank.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
         }
     ]
 }

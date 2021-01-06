@@ -1,0 +1,102 @@
+<!doctype html>
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+
+        <title>Muse.io Artists</title>
+        <meta name='description' content='Show's all of the artists that a user has in their songbank'>
+        <meta name='author' content='David Ruffner'>
+
+        <link rel='stylesheet' href='../css/common.css'>
+        <link rel='stylesheet' href='../css/navbar.css'>
+        <link rel='stylesheet' href='./css/artists.css'>
+
+        <!-- Check for user token -->
+        <script>
+            // Try to get from session storage first
+            let user_token = sessionStorage.getItem('museio_user_token');
+            if (!user_token || user_token.length < 1) {
+                // Try to get from local storage
+                user_token = localStorage.getItem('museio_user_token');
+                if (!user_token || user_token.length < 1) {
+                    // Logout
+                    location.replace('https://museio.davidr.pro'); 
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <!-- <div id='loading_container'>
+            <div id='loading_top_container'>
+                <img src='../resources/icons/logo.png' width='125'>
+                <h2>Muse.<span>io</span></h2>
+                <h1>Loading Your Dashboard</h1>
+            </div>
+            <div id='loading_bottom_container'>
+                <img class='loading_gif' src='../resources/images/loading_gif.gif' width='250'/>
+            </div>
+        </div> -->
+
+        <div id="songbank_container">
+            <div id="songbank_title_container">
+                <h1 id="songbank_title">Your Artists</h1>
+                <div id="songbank_title_divider"></div>
+            </div>
+            <!-- <div id="filter_container">
+                <h1 id="filter_title">Sort By</h1>
+                <button tabindex="1" class="filter_button active_filter_button" data-filter='alphabetically'>Alphabetically</button>
+                <button tabindex="2" class="filter_button" data-filter="artist">Artist</button>
+                <button tabindex="3" class="filter_button" data-filter="genre">Genre</button>
+                <button tabindex="4" class="filter_button" data-filter="book">Book</button>
+            </div> -->
+            <div id="alphabetical_sort_container">
+                <div id="alphabetical_choice_container">
+                    <h2 tabindex="5" class="alphabetical_choice active_alphabetical_choice">All</h2>
+                    <h2 tabindex="5" class="alphabetical_choice">A</h2>
+                    <h2 tabindex="6" class="alphabetical_choice">B</h2>
+                    <h2 tabindex="7" class="alphabetical_choice">C</h2>
+                    <h2 tabindex="8" class="alphabetical_choice">D</h2>
+                    <h2 tabindex="9" class="alphabetical_choice">E</h2>
+                    <h2 tabindex="10" class="alphabetical_choice">F</h2>
+                    <h2 tabindex="11" class="alphabetical_choice">G</h2>
+                    <h2 tabindex="12" class="alphabetical_choice">H</h2>
+                    <h2 tabindex="13" class="alphabetical_choice">I</h2>
+                    <h2 tabindex="14" class="alphabetical_choice">J</h2>
+                    <h2 tabindex="15" class="alphabetical_choice">K</h2>
+                    <h2 tabindex="16" class="alphabetical_choice">L</h2>
+                    <h2 tabindex="17" class="alphabetical_choice">M</h2>
+                    <h2 tabindex="18" class="alphabetical_choice">N</h2>
+                    <h2 tabindex="19" class="alphabetical_choice">O</h2>
+                    <h2 tabindex="20" class="alphabetical_choice">P</h2>
+                    <h2 tabindex="21" class="alphabetical_choice">Q</h2>
+                    <h2 tabindex="22" class="alphabetical_choice">R</h2>
+                    <h2 tabindex="23" class="alphabetical_choice">S</h2>
+                    <h2 tabindex="24" class="alphabetical_choice">T</h2>
+                    <h2 tabindex="25" class="alphabetical_choice">U</h2>
+                    <h2 tabindex="26" class="alphabetical_choice">V</h2>
+                    <h2 tabindex="27" class="alphabetical_choice">W</h2>
+                    <h2 tabindex="28" class="alphabetical_choice">X</h2>
+                    <h2 tabindex="29" class="alphabetical_choice">Y</h2>
+                    <h2 tabindex="30" class="alphabetical_choice">Z</h2>
+                    <h2 tabindex="31" class="alphabetical_choice">0-9</h2>
+                </div>
+
+                <div id="no_results_song_detail_container">
+                    <h1>No Results</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery CDN -->
+        <script
+        src='https://code.jquery.com/jquery-3.5.1.js'
+        integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc='
+        crossorigin='anonymous'></script>
+
+        <script src='../resources/common.js'></script>
+        <script src='../resources/navbar.js'></script>
+        <script src='./js/artists.js'></script>
+    </body>
+</html>

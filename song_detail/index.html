@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+
+        <title>Song Detail</title>
+        <meta name='description' content='Provides more details about a particular song'>
+        <meta name='author' content='David Ruffner'>
+
+        <link rel="stylesheet" href="../resources/loading_container.css">
+        <link rel='stylesheet' href='../css/common.css'>
+        <link rel='stylesheet' href='../css/navbar.css'>
+        <link rel='stylesheet' href='./css/song_detail.css'>
+
+        <!-- Check for user token -->
+        <script>
+            // Try to get from session storage first
+            let user_token = sessionStorage.getItem('museio_user_token');
+            if (!user_token || user_token.length < 1) {
+                // Try to get from local storage
+                user_token = localStorage.getItem('museio_user_token');
+                if (!user_token || user_token.length < 1) {
+                    // Logout
+                    location.replace('https://museio.davidr.pro'); 
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <div id='loading_container'>
+            <div id='loading_top_container'>
+                <img src='../resources/icons/logo.png' class="product_logo" width='125'>
+                <h2>Muse.<span>io</span></h2>
+                <h1>Loading Your Song</h1>
+                <img class='loading_gif' src='../resources/images/loading_gif.gif' width='250'/>
+            </div>
+        </div>
+        
+        <div id="song_detail_container">
+            <div id="song_detail_title_container">
+                <h1 id="song_detail_title">River Flows In You</h1>
+                <h2 id="song_detail_artists">Yiruma</h2>
+                <div id="song_detail_title_divider"></div>
+            </div>
+            <div id="song_detail_cards_container">
+                <div id="song_artist_detail_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Artist</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Yiruma</h2>
+                        <h2 class="song_detail_body_title_overlay" data-overlay_page='artist_detail' data-overlay_param='artist_id' data-overlay_param_value_container='#song_artist_detail_card'></h2>
+                    </div>
+                </div>
+                <div id="song_detail_genre_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Genre</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Piano</h2>
+                        <h2 class="song_detail_body_title_overlay" data-overlay_page='genre_detail' data-overlay_param='custom_genre_id' data-overlay_param_value_container='#song_detail_genre_card'></h2>
+                    </div>
+                </div>
+                <div id="song_detail_past_performance_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Past Performance</h1>
+                    <h1 class="song_detail_loading_message">Loading...</h1>
+                    <div class="song_detail_card_body_container">
+                        <div class="song_detail_status_message_container">
+                            <h1></h1>
+                        </div>
+                        <h2 id="performance_start_date_filter">Start Date</h2>
+                        <h2 id="performance_end_date_filter">End Date</h2>
+                        <input type="date" id="performance_start_date_input">
+                        <input type="date" id="performance_end_date_input">
+                        <div id="past_performance_chart"></div>
+                    </div>
+                    <h1 class="song_detail_no_results_message">No Results</h1>
+                </div>
+                <div id="song_detail_book_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Book</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title"></h2>
+                        <h3 class="song_detail_page_number">Pages 60 - 63</h3>
+                        <div class="song_detail_page_number_divider"></div>
+                        <img class="song_detail_book_cover_photo" width="225"/>
+                    </div>
+                    <div class="song_detail_card_overlay_container" data-overlay_page='book_detail' data-overlay_param='book_id' data-overlay_param_value_container='#song_detail_book_card'>
+                        <h2 class="song_detail_card_overlay"></h2>
+                    </div>
+                </div>
+                <div id="song_detail_sheet_music_card" class="song_detail_card">
+                    <h1 class='song_detail_card_title'>Sheet Music</h1>
+                    <div class="song_detail_card_body_container">
+                        <h2 class="song_detail_body_title">Test</h2>
+                        <img class="song_detail_sheet_music_cover_photo" width="225"/>
+                    </div>
+                    <div class="song_detail_card_overlay_container" data-overlay_page='sheet_music_detail' data-overlay_param='sheet_music_id' data-overlay_param_value_container='#song_detail_sheet_music_card'>
+                        <h2 class="song_detail_card_overlay"></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery CDN -->
+        <script
+        src='https://code.jquery.com/jquery-3.5.1.js'
+        integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc='
+        crossorigin='anonymous'></script>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src='../resources/common.js'></script>
+        <script src='../resources/navbar.js'></script>
+        <script src='./js/song_detail.js'></script>
+    </body>
+</html>

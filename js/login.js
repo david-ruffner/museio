@@ -1,3 +1,7 @@
+const base_api_url = 'https://museio.davidr.pro/museio/api';
+const login_page_url = 'https://museio.davidr.pro/';
+const dashboard_page_url = 'https://museio.davidr.pro/dashboard'
+
 // Keeps the state of the remember me checkbox
 var remember_me = false;
 
@@ -289,6 +293,8 @@ function user_login() {
                                 }
 
                                 // Go to the dashboard page
+                                // TODO: Remove (used for vscode live development)
+                                // window.open(`http://127.0.0.1:5500/songbank/?category_option=my_songs`, '_self');
                                 window.open(`${dashboard_page_url}?category_option=dashboard`, '_self');
                             }
                             break;

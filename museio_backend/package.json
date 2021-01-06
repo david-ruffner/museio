@@ -11,12 +11,13 @@
   "dependencies": {
     "@supercharge/strings": "latest",
     "asn1": "latest",
+    "body-parser": "latest",
+    "cors": "^2.8.5",
+    "email-validator": "latest",
     "express": "latest",
     "jsonwebtoken": "latest",
-    "node-rsa": "latest",
-    "body-parser": "latest",
-    "email-validator": "latest",
+    "mysql": "latest",
     "node-html-parser": "latest",
-    "mysql": "latest"
+    "node-rsa": "latest"
   }
 }

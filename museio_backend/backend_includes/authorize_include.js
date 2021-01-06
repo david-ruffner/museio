@@ -22,7 +22,7 @@ function issue_token(user_email, user_password, program_init) {
                 let comparator_hash = crypto.createHash("sha512").update(user_account.Salt + user_password).digest('hex');
 
                 // Check if the comparator hash equals the user's hash
-                if (comparator_hash.toLowerCase() != user_account.Hash.toLowerCase()) {
+                if (comparator_hash.toLocaleLowerCase() != user_account.Hash.toLocaleLowerCase()) {
                     return reject(new Response(`incorrect_username_or_password`, `Your given username or password was incorrect.`, 200))
                 }
 
