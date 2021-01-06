@@ -179,6 +179,65 @@ app.get("/museio/api/songbank/get_artist_info", (req, res) => {
     })
 })
 
+app.get("/museio/api/songbank/view_sheet_music", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for a sheet_music_id parameter
+        if (!req.query.sheet_music_id || req.query.sheet_music_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_sheet_music_id`, `A sheet_music_id parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_sheet_music_id = req.query.sheet_music_id.trim();
+        }
+
+        // Get details about the given book, and get its attached sheet music (if any).
+        let sql_query = `select SheetMusic.File, SheetMusic.Book_Page_Start, SheetMusic.Book_Page_End from SheetMusic
+        INNER JOIN Users ON SheetMusic.User_ID = Users.User_ID
+        WHERE SheetMusic.Sheet_Music_ID = ? AND Users.Email_Address = ?`;
+
+        program_init.connection.query(sql_query, [given_sheet_music_id, result.user_email_address], (err, result) => {            
+            if (err) {
+                console.log(err);
+                logging_include.write_log(`/museio/api/books/get_book_details`, err, common_include.LOG_CATEGORIES.ERROR, 129, ERROR_LOG_TYPES.SQL);
+            }
+            else if (result.length < 1) {
+                return res.status(200).send(
+                   JSON.stringify(new Response(`no_results`, `Your given sheet_music_id '${given_sheet_music_id}' could not be found in our system.`))
+                )
+            }
+            else {
+                let response = {
+                    book_page_start: result[0].Book_Page_Start,
+                    book_page_end: result[0].Book_Page_End,
+                    file: result.File = Buffer.from(result[0].File).toString("base64")
+                }
+
+                return res.status(200).send(
+                   JSON.stringify(new Response(`success`, response))
+                )
+            }
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
 app.post("/museio/api/songbank/edit_artist", (req, res) => {
     // Pull the token from the auth bearer header
     if (!req.headers.authorization) {

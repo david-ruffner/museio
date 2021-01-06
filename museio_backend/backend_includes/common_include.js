@@ -1,5 +1,16 @@
 // Common classes and functions used accross the entire back-end
 
+// Common logging categories
+const LOG_CATEGORIES = {
+    INFO: "info",
+    ERROR: "error"
+}
+
+const ERROR_LOG_TYPES = {
+    DEFAULT: "default",
+    SQL: 'sql'
+}
+
 class Response {
     constructor(status, message, status_code = null, extra_parameters = null) {
         this.status = status;
@@ -44,5 +55,7 @@ function test_password_input(password_input) {
 module.exports = {
     Response: Response,
     test_password_input: test_password_input,
-    edit_input_constraints: edit_input_constraints
+    edit_input_constraints: edit_input_constraints,
+    LOG_CATEGORIES: LOG_CATEGORIES,
+    ERROR_LOG_TYPES: ERROR_LOG_TYPES
 }

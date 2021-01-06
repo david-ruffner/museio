@@ -29,7 +29,14 @@
     </head>
 
     <body>
-
+        <!-- <div id='loading_container'>
+            <div id='loading_top_container'>
+                <img src='../resources/icons/logo.png' class="product_logo" width='125'>
+                <h2>Muse.<span>io</span></h2>
+                <h1>Loading Your Book</h1>
+                <img class='loading_gif' src='../resources/images/loading_gif.gif' width='250'/>
+            </div>
+        </div> -->
         <div id="book_detail_container">
             <div id="book_detail_title_container">
                 <h1 id="book_detail_title">Schirmer's Library Sonatina Album For The Piano</h1>
@@ -39,6 +46,10 @@
             <div id="book_detail_info_container">
                 <img id="book_cover_photo" src="../resources/images/book_cover.png" width="225">
                 <h1 id="book_total_pages_header">127 Pages</h1>
+            </div>
+            <div id='book_detail_no_results_toc_container'>
+                <h1>This Book Has No Music In It</h1>
+                <button id="book_add_music_button">Add Music</button>
             </div>
             <div id="book_detail_toc_container">
                 <div id="toc_header_container">
@@ -50,46 +61,25 @@
                     <h1>Page Numbers</h1>
                     <h1>Options</h1>
                 </div>
-                <div class="toc_entry_container">
-                    <h1>Sonatina</h1>
-                    <h1>Pages 62 - 71</h1>
-                    <div class="toc_icon">
-                        <img class="toc_view_file_icon underlay_icon" src="../resources/images/view_file_icon.png" width="45" height="55"/>
-                        <img class="toc_view_file_icon overlay_icon" src="../resources/images/view_file_icon_overlay.png" width="45" height="55"/>
-                        <div class="toc_icon_tooltip">
-                            <h1>View Song</h1>
-                        </div>
-                    </div>
-                    <div class="toc_option_divider"></div>
-                    <div class="toc_icon">
-                        <img class="toc_download_file_icon underlay_icon" src="../resources/images/download_file_icon.png" width="45" height="55"/>
-                        <img class="toc_download_file_icon overlay_icon" src="../resources/images/download_file_icon_overlay.png" width="45" height="55"/>
-                        <div class="toc_icon_tooltip">
-                            <h1>Download Song</h1>
-                        </div>
-                    </div>
-                    <div class="toc_option_divider"></div>
-                    <div class="toc_icon">
-                        <img class="toc_email_file_icon underlay_icon" src="../resources/images/email_file_icon.png" width="60" height="45"/>
-                        <img class="toc_email_file_icon overlay_icon" src="../resources/images/email_file_icon_overlay.png" width="60" height="45"/>
-                        <div class="toc_icon_tooltip">
-                            <h1>Email Song</h1>
-                        </div>
-                    </div>
-                    <div class="toc_option_divider"></div>
-                    <div class="toc_icon">
-                        <img class="toc_remove_from_book_icon underlay_icon" src="../resources/images/remove_icon.png" width="50" height="50"/>
-                        <img class="toc_remove_from_book_icon overlay_icon" src="../resources/images/remove_icon_overlay.png" width="50" height="50"/>
-                        <div class="toc_icon_tooltip">
-                            <h1>Remove Song From This Book</h1>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div id="pdf_view_container">
-            <iframe id="pdf_view"></iframe>
+        <div id="pdf_view_background">
+            <h1 id="pdf_loading_header">Loading</h1>
+            <div id="pdf_controls_container">
+                <h1>In</h1>
+                <h1>Out</h1>
+                <select>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+                <h1>Close</h1>
+            </div>
+            <div id="pdf_view_container">
+                <canvas id="pdf_view"></canvas>
+            </div>
         </div>
 
         <!-- jQuery CDN -->
@@ -100,7 +90,7 @@
 
         <script src="./js/pdf_base64.js"></script>
 
-        <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+        <script src="../resources/pdf_js/build/pdf.js"></script>
 
         <script src='../resources/common.js'></script>
         <script src='../resources/navbar.js'></script>

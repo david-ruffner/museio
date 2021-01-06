@@ -180,3 +180,14 @@ $(document).on("mousedown", ".songbank_display_song", function(e) {
         console.log("Sorry, something went wrong while opening that song. Please try again.");
     }
 })
+
+// Fades out the loading container found on most pages
+function loading_container_fadeout(fade_time = 1000) {
+    $("#loading_container").animate({bottom: '100%', opacity: 0}, fade_time);
+}
+
+// Displays a simple error message and falls back to the dashboard page
+function error_and_fallback(message, fallback_page = "https://museio.davidr.pro/dashboard", open_page_type = "_self") {
+    alert(message);
+    window.location(fallback_page, open_page_type);
+}

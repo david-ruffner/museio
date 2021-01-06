@@ -386,6 +386,6 @@ function is_page_ready(load_piece) {
     }
 
     setTimeout(function() {
-        $("#loading_container").animate({bottom: '100%', opacity: 0}, 1000);
+        loading_container_fadeout()
     }, 250);
 }

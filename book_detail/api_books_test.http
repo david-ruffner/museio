@@ -1,0 +1,19 @@
+@token = Bearer itk+LWug3ppIKzzxNU9RS6330LTFPJjtgdju3yqJkW1FjIUe4fhABfD3r4i7wBJ3gxmgXfDk9QGtAJjOr/celx1TSWVP0nb05SZuINDc1mSD6XybCcTGoSSC+akRhoLvhhTejLfNlvBCm9HD5QfmlfBXI5oThMkgT+5ca8TvfJghhFMQrOQrvh0ACCMYE85GK0PASRCw1h8OwhYvQsudSFVMnbOWXq4kYaBaUYd6brakw44+jZXmmsSbHcyNp2ohguDOzyweFWm3Nrvx1FdGZn2GknIqZJxn0852HDpzmywjUz7j+LnfoC2Cd4ptyo9YTP2JPAPlvpNekfLPWtE0nquLkWH4XFmPrtrQ7fQxAp0OXm/qOwimUK4ByD+ZXvF1DxH1trXjmMxv1yELZM1lYM9pHUEYzO29FnX1EdeRfeGL8t9FJjZ0cUFL3z9UpK9sGmW/muPg+8kSy55ulubUGFd9BjtmfT0qeTVIEv+R07fRZVCFva9HbTlAhJdyxn6+vqKES25oJ7kRE/1kZ5+Z9FWL0i14Z88j1yMhdH72htuqL98OebuDWkQv7cg+0ietSx+EbSvYFw859PtjDHn+3m5rDipyXU4SzkuVF58Kxy0nU4779sk6OEtgatJKOLZeIKV0cmqBTnDErEiyQrClwMnJATmVsUhbm+ljs+tJESg=
+
+POST https://museio.davidr.pro/museio/api/tokenauthor/login
+Content-Type: application/json
+ 
+{
+    "email": "davidruffner924@gmail.com",
+    "password": "Playedit16$"
+}
+
+###
+
+# Get book details
+GET https://museio.davidr.pro/museio/api/books/get_book_details
+    ?book_id=Q3OSqnwZZYLiAC6
+Content-Type: application/xml
+Authorization: {{token}}
+
+###

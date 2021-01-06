@@ -5,6 +5,23 @@
     "version": "0.2.0",
     "configurations": [        
         {
+            "name": "Launch Books Microservice",
+            "program": "${workspaceFolder}/museio_backend/books.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "pwa-chrome",
+            "url": "https://museio.davidr.pro/*",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "Launch Users Microservice",
             "program": "${workspaceFolder}/museio_backend/users.js",
             "request": "launch",

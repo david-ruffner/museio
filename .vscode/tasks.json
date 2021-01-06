@@ -6,7 +6,7 @@
         {
             "label": "pm2",
             "type": "shell",
-            "command": "pm2 ${input:pm2_action} ${input:pm2_service}",
+            "command": "pm2 ${input:pm2_action} ${workspaceFolder}/museio_backend/${input:pm2_service}.js",
             "problemMatcher": [],
             "presentation": {
                 "focus": true
@@ -29,7 +29,8 @@
             "description": "Select a PM2 action",
             "options": [
                 "start",
-                "stop"
+                "stop",
+                "restart"
             ]
         },
         {
@@ -40,7 +41,8 @@
                 "dashboard",
                 "songbank",
                 "tokenauthor",
-                "users"
+                "users",
+                "books"
             ]
         }
     ]

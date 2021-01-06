@@ -16,6 +16,8 @@ app.use(body_parser.json());
 app.use(body_parser.urlencoded({extended: true}));
 const authorize_include = require('./backend_includes/authorize_include');
 const common_include = require('./backend_includes/common_include');
+const logging_include = require('./backend_includes/logging_include');
+const { ERROR_LOG_TYPES } = require('./backend_includes/common_include');
 
 var Response = common_include.Response;
 
@@ -104,7 +106,82 @@ app.get("/museio/api/books/get_book_details", (req, res) => {
     // Authorize the token
     authorize_include.authorize_token(given_token, program_init)
     .then(result => {
-        
+        // Check for a book_id parameter
+        if (!req.query.book_id || req.query.book_id.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_book_id`, `A book_id parameter was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var given_book_id = req.query.book_id.trim();
+        }
+
+        // Get details about the given book, and get its attached sheet music (if any).
+        let sql_query = `select Books.*,
+        SheetMusic.Sheet_Music_ID, SheetMusic.File as Sheet_Music_File, SheetMusic.Name as Song_Name, SheetMusic.Book_Page_Start, SheetMusic.Book_Page_End
+        FROM Books
+        LEFT JOIN SheetMusic ON Books.Book_ID = SheetMusic.Book_ID
+        WHERE Books.Book_ID = ?`;
+
+        program_init.connection.query(sql_query, [given_book_id], (err, result) => {
+            let response_results = [];
+            
+            if (err) {
+                console.log(err);
+                logging_include.write_log(`/museio/api/books/get_book_details`, err, common_include.LOG_CATEGORIES.ERROR, 129, ERROR_LOG_TYPES.SQL);
+            }
+            else if (result.length < 1) {
+                return res.status(200).send(
+                   JSON.stringify(new Response(`no_results`, `Your given book_id '${given_book_id}' could not be found in our system.`))
+                )
+            }
+            else {
+                result.forEach(row => {
+                    let result_obj = response_results.find(obj => obj.book_id === row.Book_ID);
+                    if (result_obj != undefined) {
+                        // This book has already been added to the results, so just add this row as a sheet music child
+                        result_obj.book_toc.push({
+                            name: row.Song_Name,
+                            sheet_music_id: row.Sheet_Music_ID,
+                            sheet_music_file: Buffer.from(row.Sheet_Music_File).toString("base64"),
+                            book_page_start: row.Book_Page_Start,
+                            book_page_end: row.Book_Page_End
+                        })
+                    }
+                    else {
+                        response_results.push({
+                            book_id: row.Book_ID,
+                            book_details: {
+                                name: row.Name,
+                                picture: Buffer.from(row.Picture).toString("base64"),
+                                author: row.Author,
+                                total_pages: row.Total_Pages
+                            },
+                            book_toc: [
+                                {
+                                    name: row.Song_Name,
+                                    sheet_music_id: row.Sheet_Music_ID,
+                                    sheet_music_file: Buffer.from(row.Sheet_Music_File).toString("base64"),
+                                    book_page_start: row.Book_Page_Start,
+                                    book_page_end: row.Book_Page_End
+                                }
+                            ]
+                        })
+                    }
+                })
+
+                // Sort each book's toc by starting page number
+                response_results.forEach(book => {
+                    if (book.book_toc && book.book_toc.length > 0) {
+                        book.book_toc = book.book_toc.sort((a, b) => a.book_page_start < b.book_page_start);
+                    }
+                })
+
+                return res.status(200).send(
+                   JSON.stringify(new Response(`success`, response_results))
+                )
+            }
+        })
     })
     .catch(error => {
         return res.status(error.status_code).send(
