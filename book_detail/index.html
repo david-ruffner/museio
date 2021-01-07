@@ -67,15 +67,18 @@
         <div id="pdf_view_background">
             <h1 id="pdf_loading_header">Loading</h1>
             <div id="pdf_controls_container">
-                <h1>In</h1>
-                <h1>Out</h1>
-                <select>
+                <img id="pdf_zoom_in_icon" src="../resources/images/zoom_in_icon.png" width="45"/>
+                <img id="pdf_zoom_out_icon" src="../resources/images/zoom_out_icon.png" width="45"/>
+                <img id="pdf_zoom_in_icon_overlay" src="../resources/images/zoom_in_icon_overlay.png" width="45"/>
+                <img id="pdf_zoom_out_icon_overlay" src="../resources/images/zoom_out_icon_overlay.png" width="45"/>
+                <select id="pdf_page_select">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
                 </select>
-                <h1>Close</h1>
+                <img id="pdf_close_icon" src="../resources/images/close_icon.png" width="35"/>
+                <img id="pdf_close_icon_overlay" src="../resources/images/close_icon_overlay.png" width="35"/>
             </div>
             <div id="pdf_view_container">
                 <canvas id="pdf_view"></canvas>

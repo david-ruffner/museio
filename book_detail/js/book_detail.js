@@ -73,7 +73,7 @@ $(document).ready(function() {
                                     </div>
                                 </div>
                                 <div class="toc_option_divider"></div>
-                                <div class="toc_icon">
+                                <div class="toc_icon download_file_toc_icon">
                                     <img class="toc_download_file_icon underlay_icon" src="../resources/images/download_file_icon.png" width="45" height="55"/>
                                     <img class="toc_download_file_icon overlay_icon" src="../resources/images/download_file_icon_overlay.png" width="45" height="55"/>
                                     <div class="toc_icon_tooltip">
@@ -134,21 +134,19 @@ function is_page_ready(load_piece) {
     }, 250);
 }
 
-$("#pdf_controls_container > h1").click(function() {
-    switch ($(this).text()) {
-        case "In":
-            re_render_pdf(null, "add");
-            break;
-        case "Out":
-            re_render_pdf(null, "subtract");
-            break;
-        case "Close":
-            $("#pdf_view_background").animate({opacity: 0}, 500, function() {
-                $(this).css({display: 'none'});
-                $("body").css({overflowY: 'auto'});
-            })
-            break;
-    }
+$("#pdf_zoom_in_icon_overlay").click(function() {
+    re_render_pdf(null, "add");
+})
+
+$("#pdf_zoom_out_icon_overlay").click(function() {
+    re_render_pdf(null, "subtract");
+})
+
+$("#pdf_close_icon_overlay").click(function() {
+    $("#pdf_view_background").animate({opacity: 0}, 500, function() {
+        $(this).css({display: 'none'});
+        $("body").css({overflowY: 'auto'});
+    })
 })
 
 function re_render_pdf(newPage = null, scaleAction = null, scaleFactor = 0.25) {
@@ -220,6 +218,39 @@ function re_render_pdf(newPage = null, scaleAction = null, scaleFactor = 0.25) {
         });
     })
 }
+
+$(document).on("click", ".download_file_toc_icon", function() {
+    let sheet_music_id = $(this).parent().data().sheet_music_id;
+    if (!sheet_music_id || sheet_music_id.length < 1) {
+        return false;
+    }
+    
+    let user_token = get_user_token();
+    
+    if (user_token) {
+        // Call the API
+        $.ajax({
+            url: `https://museio.davidr.pro/museio/api/songbank/view_sheet_music?sheet_music_id=${sheet_music_id}`,
+            type: 'GET',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('Authorization', `Bearer ${user_token}`)
+            },
+            success: function(result) {
+                result = JSON.parse(result);
+
+                // Create hidden link with base64 as source, and click it
+                const blob = new Blob([`data:application/pdf;base64,${result.message.file}`], { type: "application/pdf" });
+                const link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "myfile.pdf";
+                link.click();
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+    }
+})
 
 $(document).on("click", ".view_file_toc_icon", function() {
     let sheet_music_id = $(this).parent().data().sheet_music_id;
