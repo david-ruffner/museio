@@ -343,12 +343,17 @@ $(document).on("mousedown", ".song_detail_body_title_overlay, .song_detail_card_
         }
 
         let param = $(this).data().overlay_param;
-        let param_value_container = $(this).data().overlay_param_value_container;
-        try {
-            var param_value = $(param_value_container).data()[param];
+        if (param === "custom_genre_id") {
+            var param_value = $(this).siblings(".song_detail_body_title").text();
         }
-        catch (ex) {
-            var param_value = null;
+        else {
+            let param_value_container = $(this).data().overlay_param_value_container;
+            try {
+                var param_value = $(param_value_container).data()[param];
+            }
+            catch (ex) {
+                var param_value = null;
+            }
         }
 
         let url = (param_value) ? `https://museio.davidr.pro/${page}?${param}=${encodeURIComponent(param_value)}` : `https://museio.davidr.pro/${page}`;

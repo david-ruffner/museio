@@ -1,0 +1,364 @@
+/* body CSS rules can be found in /resources/navbar.js */
+
+#genre_detail_container {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content) auto;
+}
+
+#genre_detail_title_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content);
+}
+
+#genre_detail_title {
+    font-family: Raleway Light;
+    font-size: 32pt;
+    font-weight: 300;
+    justify-self: center;
+    text-align: center;
+    color: black;
+}
+
+#genre_detail_title_divider {
+    width: 30%;
+    justify-self: center;
+    border-bottom: 3px solid var(--background-grey);
+}
+
+#genre_details_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: max-content;
+}
+
+#genre_details_container > h1,
+#genre_songs_container > h1 {
+    grid-column: 1 / -1;
+    justify-self: center;
+    text-align: center;
+    font-family: Raleway Light;
+    font-size: 26pt;
+}
+
+.detail_input_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, max-content);
+    margin-bottom: 25px;
+    width: max-content;
+    justify-self: center;
+}
+
+.detail_input_message_container {
+    grid-column: 1;
+    grid-row: 2;
+    background-color: var(--message-background-grey);
+    border-radius: 15px;
+    max-width: 425px;
+    justify-self: center;
+    display: none;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    overflow: hidden;
+}
+
+.detail_input_message_container > h2 {
+    font-family: Raleway Light;
+    font-size: 18pt;
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    /* margin-top: 15px;
+    margin-bottom: 15px; */
+    overflow: hidden;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+    color: var(--error-box-red);
+    margin: 0;
+    padding: 15px;
+}
+
+.detail_input_container > h2 {
+    justify-self: center;
+    text-align: center;
+    font-family: Raleway Light;
+    font-weight: 300;
+    font-size: 22pt;
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;
+}
+
+.detail_input {
+    justify-self: center;
+    font-family: Raleway Light;
+    font-size: 22pt;
+    border: none;
+    border-bottom: 2px solid black;
+    grid-column: 1;
+    grid-row: 3;
+    z-index: 1;
+    width: 425px;
+    padding-right: 40px;
+}
+
+.edit_save_button {
+    width: max-content;
+    justify-self: center;
+    text-align: center;
+    vertical-align: center;
+    font-family: Oswald Light;
+    margin-top: 25px;
+    font-size: 18pt;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--brighter-logo-blue);
+    border: 2px solid var(--brighter-logo-blue);
+    color: white;
+    border-radius: 15px;
+    /* transition: all 0.15s ease-in; */
+    display: none;
+    overflow: hidden;
+}
+
+.edit_save_button:hover {
+    cursor: pointer;
+    color: var(--brighter-logo-blue);
+    background-color: white;
+}
+
+.edit_icon_container {
+    grid-column: 1;
+    grid-row: 3;
+    z-index: 2;
+    justify-self: right;
+    align-self: center;
+    margin-right: 10px;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+.detail_input_edit_icon {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;
+}
+
+.detail_input_edit_icon_hover {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.15s ease-in;
+}
+
+.detail_input_edit_icon_hover:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.edit_icon_tooltip {
+    width: 120px;
+    background-color: black;
+    font-family: Oswald Light;
+    font-size: 16pt;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: max-content;
+    grid-column: 1;
+    grid-row: 1 / -1;
+    justify-self: right;
+    align-self: center;
+    margin-right: -50px;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.15s ease-in;
+}
+
+.view_select_divider {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+    border-bottom: 3px solid var(--background-grey);
+}
+
+#genre_songs_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, max-content) auto;
+}
+
+#alphabetical_sort_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-rows: max-content;
+    overflow: auto;
+    margin-bottom: 50px;
+}
+
+#alphabetical_choice_container {
+    width: 60%;
+    justify-self: center;
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: 100px repeat(26, 80px) 125px;
+    grid-template-rows: minmax(50px, 1fr);
+    overflow-x: scroll;
+    height: 125px;
+}
+
+.alphabetical_choice {
+    font-family: Raleway Light;
+    font-size: 30pt;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: font-size 0.1s ease-in;
+    -webkit-user-select: none;
+}
+
+.alphabetical_choice:not(.active_alphabetical_choice):hover {
+    cursor: pointer;
+    font-size: 34pt;
+    color: var(--songbank-cta);
+}
+
+.active_alphabetical_choice {
+    font-size: 30pt;
+    font-family: Raleway Regular;
+    color: var(--songbank-cta);
+}
+
+#alphabetical_choice_container::-webkit-scrollbar {
+    height: 7px;
+}
+
+#alphabetical_choice_container::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
+}
+ 
+#alphabetical_choice_container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 25px;
+}
+
+.sort_display_header {
+    margin-top: 75px;
+    width: 85%;
+    justify-self: center;
+    display: none;
+    opacity: 0;
+    grid-template-rows: max-content;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: var(--songbank-cta);
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.sort_display_header > h1 {
+    margin: 0;
+    justify-self: right;
+    color: white;
+    font-family: Raleway Regular;
+    font-size: 28pt;
+}
+
+.sort_display_header_toggle {
+    margin-left: 25px;
+    align-self: center;
+    transition: transform 0.2s ease-in;
+}
+
+.sort_display_header_toggle:hover {
+    cursor: pointer;
+}
+
+.songbank_display_container {
+    width: 100%;
+    justify-self: center;
+    display: grid;
+    grid-template-columns: auto;
+    grid-auto-rows: max-content;
+    overflow-y: hidden;
+}
+
+.songbank_display_table_header {
+    margin-top: 10px;
+    display: grid;
+    background-color: #2E3E4A;
+    padding: 15px;
+    width: 85%;
+    justify-self: center;
+}
+
+.songbank_display_table_header > h1 {
+    font-family: Raleway Light;
+    font-size: 24pt;
+    margin: 0;
+    color: white;
+}
+
+.alphabetical_display_table_header {
+    grid-template-rows: max-content;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.alphabetical_display_container {
+    display: none;
+    opacity: 0;
+}
+
+.songbank_display_song {
+    width: 85%;
+    justify-self: center;
+    display: grid;
+    padding: 15px;
+}
+
+.alphabetical_display_song {
+    grid-template-rows: max-content;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.alphabetical_display_song:hover {
+    cursor: pointer;
+}
+
+.alphabetical_display_song:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+.alphabetical_display_song:nth-of-type(odd) {
+    background-color: #d3d3d3;
+}
+
+.alphabetical_display_song > h1 {
+    font-family: Raleway Light;
+    font-size: 20pt;
+    margin: 0;
+    align-self: center;
+}
+
+#no_results_song_detail_container {
+    justify-self: center;
+    align-self: center;
+    margin-top: 125px;
+    display: none;
+    opacity: 0;
+}
+
+#no_results_song_detail_container > h1 {
+    font-family: Raleway Light;
+    font-size: 36pt;
+    font-weight: 300;
+}

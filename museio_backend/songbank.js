@@ -90,6 +90,95 @@ function init_program(connection_limit_override = false, config_name_override = 
     })
 }
 
+app.get("/museio/api/songbank/get_genre_info", (req, res) => {
+    // Pull the token from the auth bearer header
+    if (!req.headers.authorization) {
+        return res.status(400).send(
+            JSON.stringify(new Response(`invalid_token`, `A bearer token was either not supplied, or was empty.`))
+        )
+    }
+    
+    // Format the token
+    var given_token = req.headers.authorization.replace('Bearer ', '');
+    
+    // Authorize the token
+    authorize_include.authorize_token(given_token, program_init)
+    .then(result => {
+        // Check for an artist_id param
+        if (!req.query.genre || req.query.genre.length < 1) {
+            return res.status(400).send(
+               JSON.stringify(new Response(`invalid_genre`, `A genre param was either not given, or it was empty.`))
+            )
+        }
+        else {
+            var genre = decodeURIComponent(req.query.genre.trim());
+        }
+
+        let user_email_address = result.user_email_address;
+        let sql_query = `SELECT Artists.Name AS Artist_Name,
+        Songs.Song_ID, Songs.Name as Song_Name, COALESCE(Songs.Genre, CustomGenres.Name) as Genre FROM Artists
+        INNER JOIN Songs ON Songs.Artist_ID = Artists.Artist_ID
+        LEFT JOIN CustomGenres ON Songs.Custom_Genre_ID = CustomGenres.Custom_Genre_ID
+        INNER JOIN SongBank ON Songs.Song_Bank_ID = SongBank.Song_Bank_ID
+        INNER JOIN Users ON SongBank.User_ID = Users.User_ID
+        WHERE Users.Email_Address = ? AND (Songs.Genre = ? OR CustomGenres.Name = ?)`;
+
+        program_init.connection.query(sql_query, [user_email_address, genre, genre], (err, result) => {
+            if (err) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, something went wrong while getting info about your given genre. Please try again.`))
+                )
+            }
+            else if (result.length < 1) {
+                return res.status(500).send(
+                   JSON.stringify(new Response(`internal_error`, `Sorry, we couldn't find that genre in our system.`))
+                )
+            }
+            else {
+                var return_object = {
+                    genre_name: result[0].Genre,
+                    genre_songs: []
+                }
+                        
+                result.forEach(row => {
+                    let first_letter = row.Song_Name[0].toLocaleLowerCase();
+                    let ret_obj = return_object.genre_songs.find(obj => obj.letter_name === first_letter);
+                    if (ret_obj != undefined) {
+                        ret_obj.songs.push(row);
+                    }
+                    else {
+                        let new_obj = {
+                            letter_name: first_letter,
+                            songs: []
+                        };
+                        return_object.genre_songs.push(new_obj);
+
+                        new_obj = return_object.genre_songs.find(obj => obj.letter_name === first_letter);
+                        new_obj.songs.push(row);
+                    }
+                })
+
+                // Sort each result object's song results by song name ascending
+                return_object.genre_songs = return_object.genre_songs.sort((a, b) => a.letter_name.localeCompare(b.letter_name));
+
+                // Sort the results by artist name ascending
+                return_object.genre_songs.forEach(genre_song => {
+                    genre_song.songs = genre_song.songs.sort((a, b) => a.Song_Name.localeCompare(b.Song_Name))
+                })
+
+                return res.status(200).send(
+                   JSON.stringify(new Response(`success`, return_object))
+                )
+            }
+        })
+    })
+    .catch(error => {
+        return res.status(error.status_code).send(
+            JSON.stringify(new Response(error.status, error.message))
+        )
+    })
+})
+
 app.get("/museio/api/songbank/get_artist_info", (req, res) => {
     // Pull the token from the auth bearer header
     if (!req.headers.authorization) {
